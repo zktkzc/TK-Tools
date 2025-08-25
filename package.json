@@ -24,6 +24,7 @@
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
     "@icon-park/vue-next": "^1.4.2",
+    "element-plus": "^2.11.1",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
@@ -51,7 +52,8 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
-      "esbuild"
+      "esbuild",
+      "vue-demi"
     ]
   }
 }
