@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Close, Minus, Square } from '@icon-park/vue-next'
+import { Close, Copy, Minus, Square } from '@icon-park/vue-next'
 import { WinTitleAction } from '../../../types'
 
 defineProps({
@@ -34,9 +34,9 @@ const minimize = (): void => {
 
 const maximize = (): void => {
   if (isMax.value) {
-    window.api.winTitleOp(WinTitleAction.Maximize)
-  } else {
     window.api.winTitleOp(WinTitleAction.Unmaximize)
+  } else {
+    window.api.winTitleOp(WinTitleAction.Maximize)
   }
 }
 
@@ -63,7 +63,14 @@ onMounted(() => {
         @click="minimize()"
       />
       <Square
-        v-if="showMax"
+        v-if="showMax && isMax"
+        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        style="-webkit-app-region: no-drag"
+        :title="isMax ? '还原' : '最大化'"
+        @click="maximize()"
+      />
+      <Copy
+        v-if="showMax && !isMax"
         class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         :title="isMax ? '还原' : '最大化'"
