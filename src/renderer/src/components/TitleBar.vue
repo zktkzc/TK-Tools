@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { Close, Minus, Square } from '@icon-park/vue-next'
+import { WinTitleAction } from '../../../types'
 
-const props = defineProps({
+defineProps({
   showMin: {
     type: Boolean,
     default: true
@@ -22,59 +23,56 @@ const props = defineProps({
 })
 
 const isMax = ref(false)
-const winOp = (action, data) => {
-  window.electron.ipcRenderer.send('winTitleOp', { action, data })
+
+const close = (): void => {
+  window.api.winTitleOp(WinTitleAction.Close)
 }
 
-const close = () => {
-  winOp('close', {})
+const minimize = (): void => {
+  window.api.winTitleOp(WinTitleAction.Minimize)
 }
 
-const custClose = () => {
-  winOp('close', {})
-}
-
-const minimize = () => {
-  winOp('minimize')
-}
-
-const maximize = () => {
+const maximize = (): void => {
   if (isMax.value) {
-    winOp('unmaximize')
+    window.api.winTitleOp(WinTitleAction.Maximize)
   } else {
-    winOp('maximize')
+    window.api.winTitleOp(WinTitleAction.Unmaximize)
   }
 }
 
 onMounted(() => {
   isMax.value = false
-  window.electron.ipcRenderer.on('winIsMax', (e, result) => {
+  window.electron.ipcRenderer.on('winIsMax', (_e, result) => {
     isMax.value = result
   })
-})
-
-defineExpose({
-  custClose
 })
 </script>
 
 <template>
   <div
-    class="w-full flex items-center justify-between relative drag"
+    class="w-full h-[30px] leading-[30px] flex items-center justify-between relative bg-white dark:bg-gray-800 dark:text-white"
     style="-webkit-app-region: drag"
   >
     <div class="h-full w-full text-center" style="user-select: none">{{ title }}</div>
-    <div class="h-full flex items-center justify-center absolute top-0 right-0 gap-1">
-      <Minus v-if="showMin" class="cursor-pointer" title="最小化" @click="minimize()" />
+    <div class="h-full flex items-center justify-center absolute top-0 right-0">
+      <Minus
+        v-if="showMin"
+        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        style="-webkit-app-region: no-drag"
+        title="最小化"
+        @click="minimize()"
+      />
       <Square
         v-if="showMax"
-        class="cursor-pointer"
+        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        style="-webkit-app-region: no-drag"
         :title="isMax ? '还原' : '最大化'"
         @click="maximize()"
       />
       <Close
         v-if="showClose"
-        class="cursor-pointer hover:bg-red-500 dark:bg-gray-500"
+        class="h-full w-[30px] cursor-pointer hover:bg-red-500 dark:bg-gray-800 dark:text-white dark:hover:bg-red-500 bg-white flex items-center justify-center"
+        style="-webkit-app-region: no-drag"
         title="关闭"
         @click="close()"
       />

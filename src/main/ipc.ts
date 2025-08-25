@@ -1,19 +1,14 @@
-import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron'
-import { WinTitleAction, WinTitleOpParam } from '../types'
+import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron'
+import { WinTitleAction } from '../types'
 
-ipcMain.on('winTitleOp', (e: IpcMainEvent, { action, data }: WinTitleOpParam) => {
+ipcMain.on('winTitleOp', (e: IpcMainEvent, action: WinTitleAction) => {
   const webContents = e.sender
   const win: BrowserWindow | null = BrowserWindow.fromWebContents(webContents)
   if (!win) return
 
   switch (action) {
     case WinTitleAction.Close:
-      if (data.closeType === 0) {
-        win.close()
-      } else {
-        win.setSkipTaskbar(true)
-        win.hide()
-      }
+      app.quit()
       break
     case WinTitleAction.Minimize:
       win.minimize()
