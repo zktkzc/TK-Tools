@@ -7,6 +7,8 @@ declare global {
     api: {
       winTitleOp: (action: WinTitleAction) => void
       openDevTools: () => void
+      getSystemTheme: () => Promise<string>
+      onThemeChange: (callback: (theme: string) => void) => any
     }
   }
 }

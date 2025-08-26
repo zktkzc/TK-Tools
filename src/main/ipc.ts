@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron'
+import { app, BrowserWindow, ipcMain, IpcMainEvent, nativeTheme } from 'electron'
 import { WinTitleAction } from '../types'
 
 ipcMain.on('winTitleOp', (e: IpcMainEvent, action: WinTitleAction) => {
@@ -31,4 +31,17 @@ ipcMain.on('openDevTools', (e: IpcMainEvent) => {
   } else {
     win.webContents.openDevTools()
   }
+})
+
+ipcMain.handle('getSystemTheme', () => {
+  return nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+})
+
+nativeTheme.on('updated', () => {
+  const themeMode = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+
+  // 向所有渲染进程广播主题更新
+  BrowserWindow.getAllWindows().forEach((win) => {
+    win.webContents.send('system-theme-changed', themeMode)
+  })
 })

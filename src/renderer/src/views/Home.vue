@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="h-[calc(100vh-60px)] w-full bg-white overflow-hidden">
+  <main class="h-[calc(100vh-60px)] w-full bg-white overflow-hidden dark:bg-[#252525]">
     <el-menu
       v-model="activeIndex"
       class=""
@@ -51,6 +51,7 @@ onMounted(() => {
     --el-menu-hover-bg-color: rgba(15, 173, 142, 0.12);
     --el-menu-hover-text-color: #bdc6cd;
     --el-menu-active-color: #18bc9c;
+    --el-menu-border-color: #4c4d4f;
   }
 }
 </style>

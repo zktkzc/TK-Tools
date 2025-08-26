@@ -4,9 +4,11 @@ import { ref } from 'vue'
 import { JsonViewer } from 'vue3-json-viewer'
 import 'vue3-json-viewer/dist/vue3-json-viewer.css'
 import { ElMessage } from 'element-plus'
+import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 
 const jsonStr = ref()
-const jsonData = ref()
+const jsonData = ref({})
+const { getSystemThemeMode } = useSystemThemeStore()
 
 const format = (): void => {
   try {
@@ -28,10 +30,15 @@ const repair = (): void => {
 </script>
 
 <template>
-  <div class="flex-1 m-2 flex flex-col justify-between gap-1">
+  <div class="flex-1 m-2 flex flex-col justify-between gap-1 dark:bg-[#252525]">
     <div class="grid grid-flow-row grid-cols-2 h-[350px] gap-1">
       <el-input v-model="jsonStr" type="textarea" autofocus resize="none" />
-      <json-viewer :value="jsonData" copyable class="h-full overflow-auto border" />
+      <json-viewer
+        :value="jsonData"
+        :theme="getSystemThemeMode()"
+        copyable
+        class="h-full overflow-auto border"
+      />
     </div>
     <div class="h-[40px] flex items-center px-2">
       <el-button type="primary" @click="format">格式化</el-button>
@@ -49,6 +56,10 @@ const repair = (): void => {
   &:focus {
     box-shadow: none !important;
   }
+
+  @media (prefers-color-scheme: dark) {
+    @apply bg-[#212123] text-slate-300;
+  }
 }
 
 :deep(.el-button--primary) {
@@ -56,5 +67,11 @@ const repair = (): void => {
   --el-button-border-color: #18bc9c;
   --el-button-hover-bg-color: #6ebfa8;
   --el-button-hover-border-color: #6ebfa8;
+}
+
+:deep(.jv-container) {
+  @media (prefers-color-scheme: dark) {
+    @apply border-[#166E56FF];
+  }
 }
 </style>

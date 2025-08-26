@@ -9,6 +9,12 @@ const api = {
   },
   openDevTools: () => {
     ipcRenderer.send('openDevTools')
+  },
+  getSystemTheme: (): Promise<string> => {
+    return ipcRenderer.invoke('getSystemTheme')
+  },
+  onThemeChange: (callback: (theme: string) => void) => {
+    ipcRenderer.on('system-theme-changed', (_, theme) => callback(theme))
   }
 }
 
