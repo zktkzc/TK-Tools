@@ -1,27 +1,42 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
 
 const router = useRouter()
-const handleSelect = (key: string, keyPath: string[]): void => {
-  if (key === '0') {
-    router.push('/json')
-  } else if (key === '1') {
-    router.push('/date')
-  } else if (key === '2') {
-    router.push('/hash')
-  } else if (key === '3') {
-    router.push('/gen')
-  }
+const activeIndex = ref('0')
+const menuItems = [
+  { index: '0', label: 'JSON工具', path: '/json' },
+  { index: '1', label: '日期工具', path: '/date' },
+  { index: '2', label: '哈希工具', path: '/hash' },
+  { index: '3', label: '生成工具', path: '/gen' }
+]
+const handleSelect = (key: string): void => {
+  const item = menuItems.find((i) => i.index === key)
+  if (item) router.push(item.path)
 }
+
+onMounted(() => {
+  handleSelect(activeIndex.value)
+})
 </script>
 
 <template>
   <main class="h-[calc(100vh-60px)] w-full bg-white overflow-hidden">
-    <el-menu class="" style="user-select: none" mode="horizontal" @select="handleSelect">
-      <el-menu-item index="0">JSON工具</el-menu-item>
-      <el-menu-item index="1">日期工具</el-menu-item>
-      <el-menu-item index="2">哈希工具</el-menu-item>
-      <el-menu-item index="3">生成</el-menu-item>
+    <el-menu
+      v-model="activeIndex"
+      class=""
+      style="user-select: none"
+      mode="horizontal"
+      @select="handleSelect"
+    >
+      <el-menu-item
+        v-for="item in menuItems"
+        :key="item.index"
+        :index="item.index"
+        class="cursor-pointer"
+      >
+        {{ item.label }}
+      </el-menu-item>
     </el-menu>
     <router-view />
   </main>
@@ -30,21 +45,12 @@ const handleSelect = (key: string, keyPath: string[]): void => {
 <style lang="scss" scoped>
 :deep(.el-menu--horizontal) {
   --el-menu-horizontal-height: 30px;
-}
-
-:deep(.el-menu) {
   @media (prefers-color-scheme: dark) {
-    background-color: #333;
-  }
-}
-
-:deep(.el-menu-item) {
-  @media (prefers-color-scheme: dark) {
-    color: #bdc6cd;
-    &:hover {
-      color: #bdc6cd !important;
-      background-color: rgba(15, 173, 142, 0.12) !important;
-    }
+    --el-menu-bg-color: #333;
+    --el-menu-text-color: #bdc6cd;
+    --el-menu-hover-bg-color: rgba(15, 173, 142, 0.12);
+    --el-menu-hover-text-color: #bdc6cd;
+    --el-menu-active-color: #18bc9c;
   }
 }
 </style>
