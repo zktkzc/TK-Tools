@@ -16,7 +16,7 @@ const handleSelect = (key: string, keyPath: string[]): void => {
 </script>
 
 <template>
-  <main class="h-[calc(100vh-60px)] w-full bg-white">
+  <main class="h-[calc(100vh-60px)] w-full bg-white overflow-hidden">
     <el-menu class="" style="user-select: none" mode="horizontal" @select="handleSelect">
       <el-menu-item index="0">JSON工具</el-menu-item>
       <el-menu-item index="1">日期工具</el-menu-item>
@@ -33,7 +33,9 @@ const handleSelect = (key: string, keyPath: string[]): void => {
 }
 
 :deep(.el-menu) {
-  @apply bg-[#333];
+  @media (prefers-color-scheme: dark) {
+    background-color: #333;
+  }
 }
 
 :deep(.el-menu-item) {
