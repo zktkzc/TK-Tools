@@ -21,3 +21,14 @@ ipcMain.on('winTitleOp', (e: IpcMainEvent, action: WinTitleAction) => {
       break
   }
 })
+
+ipcMain.on('openDevTools', (e: IpcMainEvent) => {
+  const win: BrowserWindow | null = BrowserWindow.fromWebContents(e.sender)
+  if (!win) return
+
+  if (win.webContents.isDevToolsOpened()) {
+    win.webContents.closeDevTools()
+  } else {
+    win.webContents.openDevTools()
+  }
+})

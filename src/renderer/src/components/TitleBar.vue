@@ -50,7 +50,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="w-full h-[30px] leading-[30px] flex items-center justify-between relative bg-white dark:bg-gray-800 dark:text-white"
+    class="w-full h-[30px] leading-[30px] flex items-center justify-between relative bg-white dark:bg-gray-800 dark:text-white rounded-tl-xl rounded-tr-xl"
     style="-webkit-app-region: drag"
   >
     <div class="h-full w-full text-center" style="user-select: none">{{ title }}</div>
@@ -63,14 +63,14 @@ onMounted(() => {
         @click="minimize()"
       />
       <Square
-        v-if="showMax && isMax"
+        v-if="showMax && !isMax"
         class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         :title="isMax ? '还原' : '最大化'"
         @click="maximize()"
       />
       <Copy
-        v-if="showMax && !isMax"
+        v-if="showMax && isMax"
         class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         :title="isMax ? '还原' : '最大化'"
@@ -78,7 +78,7 @@ onMounted(() => {
       />
       <Close
         v-if="showClose"
-        class="h-full w-[30px] cursor-pointer hover:bg-red-500 dark:bg-gray-800 dark:text-white dark:hover:bg-red-500 bg-white flex items-center justify-center"
+        class="h-full w-[30px] cursor-pointer hover:bg-red-500 dark:bg-gray-800 dark:text-white dark:hover:bg-red-500 bg-white flex items-center justify-center rounded-tr-xl"
         style="-webkit-app-region: no-drag"
         title="关闭"
         @click="close()"
@@ -87,4 +87,4 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped lang="css"></style>
+<style scoped lang="scss"></style>

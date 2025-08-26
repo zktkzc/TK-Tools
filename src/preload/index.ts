@@ -6,6 +6,9 @@ import { WinTitleAction } from '../types'
 const api = {
   winTitleOp: (action: WinTitleAction) => {
     ipcRenderer.send('winTitleOp', action)
+  },
+  openDevTools: () => {
+    ipcRenderer.send('openDevTools')
   }
 }
 

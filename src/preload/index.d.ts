@@ -6,6 +6,7 @@ declare global {
     electron: ElectronAPI
     api: {
       winTitleOp: (action: WinTitleAction) => void
+      openDevTools: () => void
     }
   }
 }
