@@ -30,8 +30,8 @@ const repair = (): void => {
 </script>
 
 <template>
-  <div class="flex-1 m-2 flex flex-col justify-between gap-1 dark:bg-[#252525]">
-    <div class="grid grid-flow-row grid-cols-2 h-[350px] gap-1">
+  <div class="m-2 flex flex-col justify-between gap-1 dark:bg-[#252525]">
+    <div class="grid grid-flow-row grid-cols-2 h-[calc(100vh-145px)] gap-1">
       <el-input v-model="jsonStr" type="textarea" autofocus resize="none" />
       <json-viewer
         :value="jsonData"
