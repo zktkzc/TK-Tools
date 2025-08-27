@@ -14,4 +14,33 @@
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
+
+  .custom-dropdown.el-popper {
+    @media (prefers-color-scheme: dark) {
+      background: #333 !important;
+      border: 1px solid #4c4d4f !important;
+    }
+
+    .el-dropdown-menu {
+      @media (prefers-color-scheme: dark) {
+        background-color: #333 !important;
+
+        .el-dropdown-menu__item {
+          color: #b7c3cb !important;
+
+          &:hover,
+          &:focus {
+            background-color: #616161 !important;
+          }
+        }
+      }
+    }
+
+    .el-popper__arrow::before {
+      @media (prefers-color-scheme: dark) {
+        background: #333 !important;
+          border: 1px solid #4c4d4f !important;
+      }
+    }
+  }
 }
