@@ -24,6 +24,7 @@ onMounted(() => {
   <main class="h-[calc(100vh-60px)] w-full bg-white overflow-hidden dark:bg-[#252525]">
     <el-menu
       v-model="activeIndex"
+      :default-active="activeIndex"
       class=""
       style="user-select: none"
       mode="horizontal"
