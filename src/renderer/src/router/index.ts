@@ -27,7 +27,19 @@ const router = createRouter({
         {
           path: '/gen',
           name: 'generator',
-          component: () => import('../views/GenetatorTool.vue')
+          component: () => import('../views/GenetatorTool.vue'),
+          children: [
+            {
+              path: '/gen/randomCh',
+              name: 'randomCharacter',
+              component: () => import('../views/GenerateCharacter.vue')
+            },
+            {
+              path: '/gen/uuid',
+              name: 'uuid',
+              component: () => import('../views/GenerateUUID.vue')
+            }
+          ]
         }
       ]
     },
