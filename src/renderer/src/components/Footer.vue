@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SettingConfig, CodeBrackets } from '@icon-park/vue-next'
+import { SettingConfig, Browser } from '@icon-park/vue-next'
 import config from '../../../../package.json'
 
 const openDevTools = (): void => {
@@ -15,7 +15,7 @@ const openDevTools = (): void => {
     tkzc00作品&nbsp;v{{ config.version }}
     <div class="h-full absolute top-0 right-0 flex items-center justify-center gap-2 mx-2">
       <el-tooltip content="打开开发者工具">
-        <code-brackets
+        <browser
           theme="outline"
           size="24"
           :stroke-width="4"
