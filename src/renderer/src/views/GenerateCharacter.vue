@@ -1,13 +1,41 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Setting, Refresh } from '@icon-park/vue-next'
+import { Refresh, Setting } from '@icon-park/vue-next'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
+import CharactersSettingDialog from '@renderer/components/CharactersSettingDialog.vue'
+import { ElMessage } from 'element-plus'
 
-const result = ref<string>()
-const length = ref<number>()
-const count = ref<number>()
-const characters = ref<string>()
+const result = ref<string>('')
+const length = ref<number>(32)
+const count = ref<number>(1)
+const characters = ref<string>('')
+const showDialog = ref<boolean>(false)
 const { getSystemThemeMode } = useSystemThemeStore()
+const handleChange = (checkList: [string]): void => {
+  if (checkList.length < 1 && characters.value.trim().length === 0) {
+    ElMessage.error('请至少选择一样预设或手动输入字符')
+    return
+  }
+
+  characters.value = ''
+  if (checkList.includes('number')) {
+    characters.value = characters.value.concat('0123456789')
+  }
+  if (checkList.includes('slow')) {
+    characters.value = characters.value.concat('abcdefghijklmnopqrstuvwxyz')
+  }
+  if (checkList.includes('up')) {
+    characters.value = characters.value.concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+  }
+  if (checkList.includes('special')) {
+    characters.value = characters.value.concat("`~!@#$%^&*()-_=+[{]}|;:',<.>/?")
+  }
+}
+
+const handleSubmit = (value: string): void => {
+  characters.value = value
+  showDialog.value = false
+}
 </script>
 
 <template>
@@ -18,21 +46,21 @@ const { getSystemThemeMode } = useSystemThemeStore()
     <div
       class="h-[42px] w-full border dark:border-[#4c4d4f] flex items-center justify-center rounded-md"
     >
-      <div class="w-[90%] flex items-center justify-center gap-1">
-        <div class="flex w-[50%] h-full items-center">
-          <el-input v-model="characters" class="flex-1" />
-          <el-button class="w-[32px]">
+      <div class="w-[60%] flex items-center justify-center gap-1">
+        <div class="flex w-[60%] h-full items-center">
+          <el-input v-model="characters" class="flex-1" readonly />
+          <el-button class="w-[32px]" @click="showDialog = true">
             <el-tooltip content="设置" placement="top" :effect="getSystemThemeMode()">
               <setting theme="outline" size="18" />
             </el-tooltip>
           </el-button>
         </div>
-        <div class="w-[30%]">
+        <div class="w-[40%]">
           <el-input v-model="length" type="number" class="length-input">
             <template #prepend>长度</template>
           </el-input>
         </div>
-        <div class="w-[30%]">
+        <div class="w-[40%]">
           <el-input v-model="count" type="number" class="count-input">
             <template #prepend>数量</template>
           </el-input>
@@ -43,6 +71,12 @@ const { getSystemThemeMode } = useSystemThemeStore()
       </div>
     </div>
   </div>
+  <characters-setting-dialog
+    :show-dialog="showDialog"
+    @close-dialog="showDialog = false"
+    @check-change="handleChange"
+    @submit="handleSubmit"
+  />
 </template>
 
 <style lang="scss" scoped>

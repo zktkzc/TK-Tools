@@ -43,4 +43,9 @@
       }
     }
   }
+
+  .el-dialog.my-dialog {
+    --el-dialog-padding-primary: 0;
+    @apply h-[50%] w-[50%] rounded-md bg-transparent;
+  }
 }
