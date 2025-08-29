@@ -28,11 +28,6 @@ const submit = (): void => {
 }
 
 const checkChange = (): void => {
-  if (checkList.value.length < 1 && inputValue.value.trim().length === 0) {
-    ElMessage.error('请至少选择一样预设或手动输入字符')
-    return
-  }
-
   inputValue.value = ''
   if (checkList.value.includes('number')) {
     inputValue.value = inputValue.value.concat('0123456789')
@@ -132,5 +127,18 @@ onMounted(() => {
 :deep(.el-checkbox) {
   @apply border dark:border-[#4C4D4F] dark:text-[#BBC6CE] dark:hover:border-[#18bc9c] dark:hover:text-[#18bc9c]
   m-0 px-2 rounded-md cursor-pointer;
+}
+
+:deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  @media (prefers-color-scheme: dark) {
+    background-color: #18bc9c;
+    border-color: #18bc9c;
+  }
+}
+
+:deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
+  @media (prefers-color-scheme: dark) {
+    color: #18bc9c;
+  }
 }
 </style>
