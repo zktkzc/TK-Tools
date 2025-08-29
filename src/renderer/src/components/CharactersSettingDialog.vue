@@ -129,16 +129,15 @@ onMounted(() => {
   m-0 px-2 rounded-md cursor-pointer;
 }
 
+:deep(.el-checkbox__inner) {
+  @apply dark:bg-[#202124] border dark:border-[#4C4D4F] dark:hover:border-[#18bc9c];
+}
+
 :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
-  @media (prefers-color-scheme: dark) {
-    background-color: #18bc9c;
-    border-color: #18bc9c;
-  }
+  @apply dark:bg-[#18bc9c] border dark:border-[#18bc9c];
 }
 
 :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
-  @media (prefers-color-scheme: dark) {
-    color: #18bc9c;
-  }
+  @apply dark:text-[#18bc9c];
 }
 </style>
