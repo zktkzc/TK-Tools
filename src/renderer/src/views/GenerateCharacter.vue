@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { Refresh, Setting } from '@icon-park/vue-next'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import CharactersSettingDialog from '@renderer/components/CharactersSettingDialog.vue'
-import { ElMessage } from 'element-plus'
 
 const result = ref<string>('')
 const length = ref<number>(32)
@@ -11,25 +10,8 @@ const count = ref<number>(1)
 const characters = ref<string>('')
 const showDialog = ref<boolean>(false)
 const { getSystemThemeMode } = useSystemThemeStore()
-const handleChange = (checkList: [string]): void => {
-  if (checkList.length < 1 && characters.value.trim().length === 0) {
-    ElMessage.error('请至少选择一样预设或手动输入字符')
-    return
-  }
-
-  characters.value = ''
-  if (checkList.includes('number')) {
-    characters.value = characters.value.concat('0123456789')
-  }
-  if (checkList.includes('slow')) {
-    characters.value = characters.value.concat('abcdefghijklmnopqrstuvwxyz')
-  }
-  if (checkList.includes('up')) {
-    characters.value = characters.value.concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-  }
-  if (checkList.includes('special')) {
-    characters.value = characters.value.concat("`~!@#$%^&*()-_=+[{]}|;:',<.>/?")
-  }
+const handleChange = (result: string): void => {
+  characters.value = result
 }
 
 const handleSubmit = (value: string): void => {

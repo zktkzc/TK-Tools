@@ -3,7 +3,7 @@ import { Close } from '@icon-park/vue-next'
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 
-const props = defineProps({
+defineProps({
   showDialog: {
     type: Boolean,
     default: false
@@ -21,7 +21,7 @@ const reset = (): void => {
   checkChange()
 }
 const handleChange = (): void => {
-  emit('check-change', checkList.value)
+  emit('check-change', inputValue.value)
 }
 const submit = (): void => {
   emit('submit', inputValue.value)
@@ -49,8 +49,8 @@ const checkChange = (): void => {
 }
 
 onMounted(() => {
-  handleChange()
   checkChange()
+  handleChange()
 })
 </script>
 
