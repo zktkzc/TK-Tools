@@ -1,5 +1,13 @@
-import { app, BrowserWindow, ipcMain, IpcMainEvent, nativeTheme } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  IpcMainEvent,
+  IpcMainInvokeEvent,
+  nativeTheme
+} from 'electron'
 import { WinTitleAction } from '../types'
+import * as crypto from 'node:crypto'
 
 ipcMain.on('winTitleOp', (e: IpcMainEvent, action: WinTitleAction) => {
   const webContents = e.sender
@@ -44,4 +52,12 @@ nativeTheme.on('updated', () => {
   BrowserWindow.getAllWindows().forEach((win) => {
     win.webContents.send('system-theme-changed', themeMode)
   })
+})
+
+ipcMain.handle('calculateHash', (_event: IpcMainInvokeEvent, originValue: string) => {
+  const md5 = crypto.createHash('md5').update(originValue).digest('hex')
+  const sha1 = crypto.createHash('sha1').update(originValue).digest('hex')
+  const sha256 = crypto.createHash('sha256').update(originValue).digest('hex')
+  const sha512 = crypto.createHash('sha512').update(originValue).digest('hex')
+  return { md5, sha1, sha256, sha512 }
 })

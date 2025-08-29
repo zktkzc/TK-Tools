@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Close } from '@icon-park/vue-next'
 import { onMounted, ref } from 'vue'
-import { ElMessage } from 'element-plus'
 
 defineProps({
   showDialog: {

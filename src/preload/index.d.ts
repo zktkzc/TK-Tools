@@ -9,6 +9,7 @@ declare global {
       openDevTools: () => void
       getSystemTheme: () => Promise<string>
       onThemeChange: (callback: (theme: string) => void) => any
+      calculateHash: (originValue: string) => any
     }
   }
 }

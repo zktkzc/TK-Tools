@@ -15,6 +15,9 @@ const api = {
   },
   onThemeChange: (callback: (theme: string) => void) => {
     ipcRenderer.on('system-theme-changed', (_, theme) => callback(theme))
+  },
+  calculateHash: (originValue: string) => {
+    return ipcRenderer.invoke('calculateHash', originValue)
   }
 }
 
