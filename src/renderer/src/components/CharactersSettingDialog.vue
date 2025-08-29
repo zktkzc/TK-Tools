@@ -71,10 +71,10 @@ onMounted(() => {
         <el-input v-model="inputValue" type="textarea" resize="none" />
         <div class="w-full h-auto flex flex-wrap items-center justify-center gap-2">
           <el-checkbox-group v-model="checkList" @change="checkChange">
-            <el-checkbox label="数字" size="small" value="number"></el-checkbox>
-            <el-checkbox label="小写字母" size="small" value="slow"></el-checkbox>
-            <el-checkbox label="大写字母" size="small" value="up"></el-checkbox>
-            <el-checkbox label="特殊符号" size="small" value="special"></el-checkbox>
+            <el-checkbox label="数字" size="small" value="number" />
+            <el-checkbox label="小写字母" size="small" value="slow" />
+            <el-checkbox label="大写字母" size="small" value="up" />
+            <el-checkbox label="特殊符号" size="small" value="special" />
           </el-checkbox-group>
           <el-button size="small" @click="reset">重置</el-button>
         </div>

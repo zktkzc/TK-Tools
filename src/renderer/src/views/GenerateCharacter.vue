@@ -8,6 +8,7 @@ const result = ref<string>('')
 const length = ref<number>(32)
 const count = ref<number>(1)
 const characters = ref<string>('')
+const split = ref<string>(',\\n')
 const showDialog = ref<boolean>(false)
 const { getSystemThemeMode } = useSystemThemeStore()
 const handleChange = (result: string): void => {
@@ -23,7 +24,15 @@ const handleSubmit = (value: string): void => {
 <template>
   <div class="h-full flex flex-col justify-center items-center gap-2">
     <div class="w-full h-full flex-1">
-      <el-input v-model="result" type="textarea" resize="none" class="h-full" />
+      <div class="h-full relative">
+        <el-input v-model="result" type="textarea" resize="none" class="h-full" />
+        <div class="absolute bottom-1 right-1 flex items-center gap-1">
+          <el-checkbox label="引号" size="small" value="number" />
+          <el-input v-model="split" class="split-input">
+            <template #prepend>分隔符</template>
+          </el-input>
+        </div>
+      </div>
     </div>
     <div
       class="h-[42px] w-full border dark:border-[#4c4d4f] flex items-center justify-center rounded-md"
@@ -37,12 +46,12 @@ const handleSubmit = (value: string): void => {
             </el-tooltip>
           </el-button>
         </div>
-        <div class="w-[40%]">
+        <div class="w-[170px]">
           <el-input v-model="length" type="number" class="length-input">
             <template #prepend>长度</template>
           </el-input>
         </div>
-        <div class="w-[40%]">
+        <div class="w-[170px]">
           <el-input v-model="count" type="number" class="count-input">
             <template #prepend>数量</template>
           </el-input>
@@ -73,6 +82,16 @@ const handleSubmit = (value: string): void => {
   }
 }
 
+.split-input {
+  height: 25px;
+  width: 120px;
+  font-size: 12px;
+
+  :deep(.el-input__inner) {
+    @apply h-full;
+  }
+}
+
 :deep(.el-input__inner) {
   @apply dark:text-[#BDC6CD];
 }
@@ -83,7 +102,7 @@ const handleSubmit = (value: string): void => {
 }
 
 :deep(.el-input-group__prepend) {
-  @apply dark:bg-[#333] border dark:border-[#4C4D4F] dark:text-[#919398];
+  @apply dark:bg-[#333] border dark:border-[#4C4D4F] dark:text-[#919398] px-2;
   box-shadow: none !important;
   user-select: none;
 }
@@ -97,5 +116,22 @@ const handleSubmit = (value: string): void => {
     --el-button-hover-text-color: #18bc9c;
     --el-button-active-border-color: #18bc9c;
   }
+}
+
+:deep(.el-checkbox) {
+  @apply border dark:border-[#4C4D4F] dark:text-[#BBC6CE] dark:hover:border-[#18bc9c] dark:hover:text-[#18bc9c]
+  m-0 px-2 rounded-md cursor-pointer;
+}
+
+:deep(.el-checkbox__inner) {
+  @apply dark:bg-[#202124] border dark:border-[#4C4D4F] dark:hover:border-[#18bc9c];
+}
+
+:deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  @apply dark:bg-[#18bc9c] border dark:border-[#18bc9c];
+}
+
+:deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
+  @apply dark:text-[#18bc9c];
 }
 </style>
