@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { Refresh, Setting } from '@icon-park/vue-next'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import CharactersSettingDialog from '@renderer/components/CharactersSettingDialog.vue'
 
+let records: string[] = []
 const result = ref<string>('')
 const length = ref<number>(32)
 const count = ref<number>(1)
 const characters = ref<string>('')
 const split = ref<string>(',\\n')
 const showDialog = ref<boolean>(false)
+const needQuotes = ref<boolean>(false)
 const { getSystemThemeMode } = useSystemThemeStore()
 const handleChange = (result: string): void => {
   characters.value = result
@@ -18,16 +20,67 @@ const handleChange = (result: string): void => {
 const handleSubmit = (value: string): void => {
   characters.value = value
   showDialog.value = false
+  if (result.value !== '') generate()
 }
+
+const getRandomInt = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+const generate = (): void => {
+  records = []
+  for (let i = 0; i < count.value; i++) {
+    let record = '"'
+    for (let j = 0; j < length.value; j++) {
+      if (characters.value.length === 0) {
+        record += '"'
+        break
+      }
+
+      const index = getRandomInt(0, characters.value.length - 1)
+      record += characters.value[index]
+
+      if (j === length.value - 1) record += '"'
+    }
+    records.push(record)
+  }
+
+  handleResult()
+}
+
+const handleResult = (): void => {
+  result.value = ''
+  const splitStr = split.value.replaceAll('\\n', '\n')
+  if (needQuotes.value) result.value = records.join(splitStr)
+  else result.value = records.join(splitStr).replaceAll('"', '')
+}
+
+const changeQuotes = (): void => {
+  handleResult()
+}
+
+watch(
+  () => split.value,
+  (): void => {
+    handleResult()
+  },
+  { immediate: true, deep: true }
+)
 </script>
 
 <template>
   <div class="h-full flex flex-col justify-center items-center gap-2">
     <div class="w-full h-full flex-1">
       <div class="h-full relative">
-        <el-input v-model="result" type="textarea" resize="none" class="h-full" />
+        <el-input
+          v-model="result"
+          type="textarea"
+          resize="none"
+          class="h-full font-mono"
+          readonly
+        />
         <div class="absolute bottom-1 right-1 flex items-center gap-1">
-          <el-checkbox label="添加引号" size="small" value="number" />
+          <el-checkbox v-model="needQuotes" label="添加引号" size="small" @change="changeQuotes" />
           <el-input v-model="split" class="split-input">
             <template #prepend>分隔符</template>
           </el-input>
@@ -47,16 +100,16 @@ const handleSubmit = (value: string): void => {
           </el-button>
         </div>
         <div class="w-[130px]">
-          <el-input v-model="length" type="number" class="length-input">
+          <el-input v-model="length" type="number" min="1" @change="generate">
             <template #prepend>长度</template>
           </el-input>
         </div>
         <div class="w-[130px]">
-          <el-input v-model="count" type="number" class="count-input">
+          <el-input v-model="count" type="number" min="1" @change="generate">
             <template #prepend>数量</template>
           </el-input>
         </div>
-        <el-button class="w-[32px]">
+        <el-button class="w-[32px]" @click="generate">
           <refresh theme="outline" size="18" />
         </el-button>
       </div>
