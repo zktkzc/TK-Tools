@@ -55,10 +55,6 @@ const handleResult = (): void => {
   else result.value = records.join(splitStr).replaceAll('"', '')
 }
 
-const changeQuotes = (): void => {
-  handleResult()
-}
-
 onMounted(() => {
   characters.value = charactersSettingDialogRef.value.setPreset(checkList.value)
 })
@@ -85,7 +81,7 @@ watch(
           placeholder="输出..."
         />
         <div class="absolute bottom-1 right-1 flex items-center gap-1">
-          <el-checkbox v-model="needQuotes" label="添加引号" size="small" @change="changeQuotes" />
+          <el-checkbox v-model="needQuotes" label="添加引号" size="small" @change="handleResult" />
           <el-input v-model="split" class="split-input">
             <template #prepend>分隔符</template>
           </el-input>

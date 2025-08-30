@@ -30,6 +30,7 @@
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
     "sm-crypto-v2": "^1.13.0",
+    "uuid": "^11.1.0",
     "vue-router": "^4.5.1",
     "vue3-json-viewer": "^2.4.1"
   },
