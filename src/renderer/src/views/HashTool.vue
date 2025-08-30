@@ -183,10 +183,10 @@ const copy = (value: string): void => {
 
   &:focus {
     box-shadow: none !important;
-    outline: #18bc9c solid 1px;
+    outline: #29a745 solid 1px;
 
     @media (prefers-color-scheme: dark) {
-      outline: #18bc9c solid 1px;
+      outline: #29a745 solid 1px;
     }
   }
 }
@@ -210,17 +210,21 @@ const copy = (value: string): void => {
 }
 
 :deep(.el-button--primary) {
-  --el-button-bg-color: #18bc9c;
-  --el-button-border-color: #18bc9c;
-  --el-button-hover-bg-color: #6ebfa8;
-  --el-button-hover-border-color: #6ebfa8;
+  --el-button-bg-color: #29a745;
+  --el-button-border-color: #29a745;
+  --el-button-hover-bg-color: #23923d;
+  --el-button-hover-border-color: #23923d;
 }
 
 .dropdown {
   :deep(.el-button) {
     @apply bg-transparent font-normal dark:text-[#B7C3CB] dark:border-[#4c4d4f];
-    --el-button-hover-border-color: #18bc9c;
-    --el-button-hover-text-color: #18bc9c;
+    --el-button-hover-border-color: #29a745;
+    --el-button-hover-text-color: #29a745;
+    &:hover {
+      border-color: #29a745 !important;
+      color: #29a745 !important;
+    }
   }
 }
 </style>

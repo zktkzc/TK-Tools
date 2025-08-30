@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { Refresh, Setting } from '@icon-park/vue-next'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import CharactersSettingDialog from '@renderer/components/CharactersSettingDialog.vue'
@@ -12,13 +12,12 @@ const characters = ref<string>('')
 const split = ref<string>(',\\n')
 const showDialog = ref<boolean>(false)
 const needQuotes = ref<boolean>(false)
+const checkList = ref<string[]>(['number', 'slow', 'up'])
+const charactersSettingDialogRef = ref()
 const { getSystemThemeMode } = useSystemThemeStore()
-const handleChange = (result: string): void => {
-  characters.value = result
-}
-
-const handleSubmit = (value: string): void => {
+const handleSubmit = (value: string, checkValue: string[]): void => {
   characters.value = value
+  checkList.value = checkValue
   showDialog.value = false
   if (result.value !== '') generate()
 }
@@ -29,6 +28,7 @@ const getRandomInt = (min: number, max: number): number => {
 
 const generate = (): void => {
   records = []
+
   for (let i = 0; i < count.value; i++) {
     let record = '"'
     for (let j = 0; j < length.value; j++) {
@@ -59,6 +59,10 @@ const changeQuotes = (): void => {
   handleResult()
 }
 
+onMounted(() => {
+  characters.value = charactersSettingDialogRef.value.setPreset(checkList.value)
+})
+
 watch(
   () => split.value,
   (): void => {
@@ -78,6 +82,7 @@ watch(
           resize="none"
           class="h-full font-mono"
           readonly
+          placeholder="输出..."
         />
         <div class="absolute bottom-1 right-1 flex items-center gap-1">
           <el-checkbox v-model="needQuotes" label="添加引号" size="small" @change="changeQuotes" />
@@ -92,20 +97,33 @@ watch(
     >
       <div class="w-[60%] flex items-center justify-center gap-1 setting-panel">
         <div class="flex w-[60%] h-full items-center characters-setting">
-          <el-input v-model="characters" class="flex-1" readonly />
-          <el-button class="w-[32px]" @click="showDialog = true">
+          <el-input
+            v-model="characters"
+            class="flex-1"
+            readonly
+            placeholder="请点击设置来配置字符..."
+          />
+          <el-button
+            class="w-[32px]"
+            @click="
+              () => {
+                showDialog = true
+                characters = charactersSettingDialogRef.setPreset(checkList)
+              }
+            "
+          >
             <el-tooltip content="设置" placement="top" :effect="getSystemThemeMode()">
               <setting theme="outline" size="18" />
             </el-tooltip>
           </el-button>
         </div>
         <div class="w-[130px]">
-          <el-input v-model="length" type="number" min="1" @change="generate">
+          <el-input v-model="length" type="number" min="0" @change="generate">
             <template #prepend>长度</template>
           </el-input>
         </div>
         <div class="w-[130px]">
-          <el-input v-model="count" type="number" min="1" @change="generate">
+          <el-input v-model="count" type="number" min="0" @change="generate">
             <template #prepend>数量</template>
           </el-input>
         </div>
@@ -116,9 +134,9 @@ watch(
     </div>
   </div>
   <characters-setting-dialog
+    ref="charactersSettingDialogRef"
     :show-dialog="showDialog"
     @close-dialog="showDialog = false"
-    @check-change="handleChange"
     @submit="handleSubmit"
   />
 </template>
@@ -168,37 +186,37 @@ watch(
   --el-button-bg-color: #ffffff;
   --el-button-border-color: #dcdfe6;
   --el-button-hover-bg-color: #ffffff;
-  --el-button-hover-border-color: #18bc9c;
-  --el-button-hover-text-color: #18bc9c;
-  --el-button-active-border-color: #18bc9c;
+  --el-button-hover-border-color: #29a745;
+  --el-button-hover-text-color: #29a745;
+  --el-button-active-border-color: #29a745;
 
   @media (prefers-color-scheme: dark) {
     --el-button-bg-color: #202124;
     --el-button-border-color: #4c4d4f;
     --el-button-hover-bg-color: #202124;
-    --el-button-hover-border-color: #18bc9c;
-    --el-button-hover-text-color: #18bc9c;
-    --el-button-active-border-color: #18bc9c;
+    --el-button-hover-border-color: #29a745;
+    --el-button-hover-text-color: #29a745;
+    --el-button-active-border-color: #29a745;
   }
 }
 
 :deep(.el-checkbox) {
-  @apply border text-[#515A6E] hover:border-[#18bc9c] dark:border-[#4C4D4F] dark:text-[#BBC6CE] dark:hover:border-[#18bc9c] dark:hover:text-[#18bc9c]
+  @apply border text-[#515A6E] hover:border-[#29A745] dark:border-[#4C4D4F] dark:text-[#BBC6CE] dark:hover:border-[#29A745] dark:hover:text-[#29A745]
   m-0 px-2 rounded-md cursor-pointer;
 
-  --el-checkbox-input-border-color-hover: #18bc9c;
+  --el-checkbox-input-border-color-hover: #29a745;
 }
 
 :deep(.el-checkbox__inner) {
-  @apply dark:bg-[#202124] border dark:border-[#4C4D4F] dark:hover:border-[#18bc9c];
+  @apply dark:bg-[#202124] border dark:border-[#4C4D4F] dark:hover:border-[#29A745];
 }
 
 :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
-  @apply bg-[#18bc9c] border border-[#18bc9c];
+  @apply bg-[#29A745] border border-[#29A745];
 }
 
 :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
-  @apply text-[#18bc9c];
+  @apply text-[#29A745];
 }
 
 .characters-setting {

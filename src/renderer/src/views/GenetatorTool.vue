@@ -45,7 +45,7 @@ onMounted(() => {
 :deep(.el-radio) {
   margin-right: 10px;
   --el-radio-text-color: #515a6e;
-  --el-radio-input-border-color-hover: #18bc9c;
+  --el-radio-input-border-color-hover: #29a745;
 
   @media (prefers-color-scheme: dark) {
     --el-radio-text-color: #bdc6cd;
@@ -58,15 +58,15 @@ onMounted(() => {
 }
 
 :deep(.el-radio__input.is-checked + .el-radio__label) {
-  color: #18bc9c !important;
+  color: #29a745 !important;
 }
 
 :deep(.el-radio__input.is-checked .el-radio__inner) {
   background-color: transparent;
-  border-color: #18bc9c;
+  border-color: #29a745;
 
   &::after {
-    background-color: #18bc9c !important;
+    background-color: #29a745 !important;
     transform: translate(-50%, -50%) scale(2);
   }
 }

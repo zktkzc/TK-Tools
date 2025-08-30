@@ -50,7 +50,7 @@ onMounted(() => {
   --el-menu-text-color: #576173;
   --el-menu-hover-bg-color: rgba(226, 239, 235, 0.5);
   --el-menu-hover-text-color: #576173;
-  --el-menu-active-color: #18bc9c;
+  --el-menu-active-color: #29a745;
   --el-menu-border-color: #dcdfe6;
 
   @media (prefers-color-scheme: dark) {
@@ -58,7 +58,7 @@ onMounted(() => {
     --el-menu-text-color: #bdc6cd;
     --el-menu-hover-bg-color: rgba(15, 173, 142, 0.12);
     --el-menu-hover-text-color: #bdc6cd;
-    --el-menu-active-color: #18bc9c;
+    --el-menu-active-color: #29a745;
     --el-menu-border-color: #4c4d4f;
   }
 }

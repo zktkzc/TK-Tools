@@ -19,7 +19,7 @@ const openDevTools = (): void => {
           theme="outline"
           size="24"
           :stroke-width="4"
-          class="cursor-pointer text-[#515A6E] dark:text-[#BDC6CD] hover:text-[#58B59A]"
+          class="cursor-pointer text-[#515A6E] dark:text-[#BDC6CD] hover:text-[#29a745]"
           @click="openDevTools"
         />
       </el-tooltip>
@@ -28,7 +28,7 @@ const openDevTools = (): void => {
           theme="filled"
           size="24"
           :stroke-width="4"
-          class="text-[#515A6E] dark:text-[#BDC6CD] hover:text-[#58B59A] cursor-pointer flex items-center"
+          class="text-[#515A6E] dark:text-[#BDC6CD] hover:text-[#29a745] cursor-pointer flex items-center"
         />
       </el-tooltip>
     </div>

@@ -32,7 +32,13 @@ const repair = (): void => {
 <template>
   <div class="m-2 flex flex-col justify-between gap-1 dark:bg-[#252525]">
     <div class="grid grid-flow-row grid-cols-2 h-[calc(100vh-145px)] gap-1">
-      <el-input v-model="jsonStr" type="textarea" autofocus resize="none" />
+      <el-input
+        v-model="jsonStr"
+        type="textarea"
+        autofocus
+        resize="none"
+        placeholder="请输入JSON字符串..."
+      />
       <json-viewer
         :value="jsonData"
         :theme="getSystemThemeMode()"
@@ -50,7 +56,7 @@ const repair = (): void => {
 <style scoped lang="scss">
 :deep(.el-textarea__inner) {
   height: 100%;
-  outline: #18bc9c solid 1px;
+  outline: #29a745 solid 1px;
   box-shadow: none !important;
 
   &:focus {
@@ -63,8 +69,8 @@ const repair = (): void => {
 }
 
 :deep(.el-button--primary) {
-  --el-button-bg-color: #18bc9c;
-  --el-button-border-color: #18bc9c;
+  --el-button-bg-color: #29a745;
+  --el-button-border-color: #29a745;
   --el-button-hover-bg-color: #6ebfa8;
   --el-button-hover-border-color: #6ebfa8;
 }

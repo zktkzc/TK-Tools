@@ -10,20 +10,22 @@ defineProps({
 })
 
 const inputValue = ref('')
-const checkList = ref(['number', 'slow', 'up'])
-const emit = defineEmits(['close-dialog', 'check-change', 'submit'])
+const checkList = ref<string[]>([])
+let oldCheckList = [] as string[]
+const isCancel = ref(true)
+const emit = defineEmits(['close-dialog', 'submit'])
 const closeDialog = (): void => {
   emit('close-dialog')
+  if (isCancel.value) checkList.value = oldCheckList
 }
 const reset = (): void => {
   checkList.value = ['number', 'slow', 'up']
   checkChange()
 }
-const handleChange = (): void => {
-  emit('check-change', inputValue.value)
-}
+
 const submit = (): void => {
-  emit('submit', inputValue.value)
+  isCancel.value = false
+  emit('submit', inputValue.value, checkList.value)
 }
 
 const checkChange = (): void => {
@@ -43,8 +45,19 @@ const checkChange = (): void => {
 }
 
 onMounted(() => {
+  isCancel.value = true
   checkChange()
-  handleChange()
+})
+
+const setPreset = (preset: string[]): string => {
+  checkList.value = preset
+  oldCheckList = preset
+  checkChange()
+  return inputValue.value
+}
+
+defineExpose({
+  setPreset
 })
 </script>
 
@@ -66,11 +79,17 @@ onMounted(() => {
           />
         </div>
         <div class="flex-1 h-full p-2 flex flex-col gap-2 bg-[#FFFFFF] dark:bg-[#252525]">
-          <el-input v-model="inputValue" type="textarea" resize="none" class="h-full" />
+          <el-input
+            v-model="inputValue"
+            type="textarea"
+            resize="none"
+            class="h-full"
+            placeholder="请选择预设或输入字符..."
+          />
           <div class="w-full">
             <el-checkbox-group
               v-model="checkList"
-              class="w-full flex items-center gap-2 flex-wrap"
+              class="w-full flex items-center justify-center gap-2 flex-wrap"
               @change="checkChange"
             >
               <el-checkbox label="数字" size="small" value="number" />
@@ -104,16 +123,16 @@ onMounted(() => {
 
   &:focus {
     box-shadow: none !important;
-    outline: 1px solid #18bc9c;
+    outline: 1px solid #29a745;
   }
 }
 
 :deep(.el-button) {
   --el-button-text-color: #515a6e;
   --el-button-hover-bg-color: #fff;
-  --el-button-hover-border-color: #18bc9c;
-  --el-button-hover-text-color: #18bc9c;
-  --el-button-active-border-color: #18bc9c;
+  --el-button-hover-border-color: #29a745;
+  --el-button-hover-text-color: #29a745;
+  --el-button-active-border-color: #29a745;
 
   @media (prefers-color-scheme: dark) {
     --el-button-text-color: #bbc6ce;
@@ -124,29 +143,29 @@ onMounted(() => {
 }
 
 .el-button.setting-button {
-  --el-button-bg-color: #18bc9c;
+  --el-button-bg-color: #29a745;
   --el-button-text-color: #fff;
-  --el-button-border-color: #18bc9c;
-  --el-button-hover-bg-color: #48c9b0;
-  --el-button-hover-border-color: #18bc9c;
+  --el-button-border-color: #29a745;
+  --el-button-hover-bg-color: #23923d;
+  --el-button-hover-border-color: #29a745;
   --el-button-hover-text-color: #fff;
-  --el-button-active-border-color: #18bc9c;
+  --el-button-active-border-color: #29a745;
 }
 
 :deep(.el-checkbox) {
-  @apply border text-[#515A6E] dark:border-[#4C4D4F] dark:text-[#BBC6CE] hover:border-[#18bc9c] hover:text-[#18bc9c]
+  @apply border text-[#515A6E] dark:border-[#4C4D4F] dark:text-[#BBC6CE] hover:border-[#29A745] hover:text-[#29A745]
   m-0 px-2 rounded-md cursor-pointer;
 }
 
 :deep(.el-checkbox__inner) {
-  @apply dark:bg-[#202124] border border-[#DCDFE6] dark:border-[#4C4D4F] hover:border-[#18bc9c];
+  @apply dark:bg-[#202124] border border-[#DCDFE6] dark:border-[#4C4D4F] hover:border-[#29A745];
 }
 
 :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
-  @apply bg-[#18bc9c] border border-[#18bc9c];
+  @apply bg-[#29A745] border border-[#29A745];
 }
 
 :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
-  @apply text-[#18bc9c];
+  @apply text-[#29A745];
 }
 </style>
