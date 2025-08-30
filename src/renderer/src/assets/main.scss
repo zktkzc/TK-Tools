@@ -24,8 +24,17 @@
     .el-dropdown-menu {
       @media (prefers-color-scheme: dark) {
         background-color: #333 !important;
+      }
 
-        .el-dropdown-menu__item {
+      .el-dropdown-menu__item {
+        color: #425462 !important;
+
+        &:hover,
+        &:focus {
+          background-color: #eee !important;
+        }
+
+        @media (prefers-color-scheme: dark) {
           color: #b7c3cb !important;
 
           &:hover,

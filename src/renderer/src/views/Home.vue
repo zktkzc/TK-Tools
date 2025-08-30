@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="h-[calc(100vh-60px)] w-full bg-white overflow-hidden dark:bg-[#252525]">
+  <main class="h-[calc(100vh-61px)] w-full bg-white overflow-hidden dark:bg-[#252525]">
     <el-menu
       v-model="activeIndex"
       :default-active="activeIndex"
@@ -46,6 +46,13 @@ onMounted(() => {
 <style lang="scss" scoped>
 :deep(.el-menu--horizontal) {
   --el-menu-horizontal-height: 30px;
+  --el-menu-bg-color: #f7f7f7;
+  --el-menu-text-color: #576173;
+  --el-menu-hover-bg-color: rgba(226, 239, 235, 0.5);
+  --el-menu-hover-text-color: #576173;
+  --el-menu-active-color: #18bc9c;
+  --el-menu-border-color: #dcdfe6;
+
   @media (prefers-color-scheme: dark) {
     --el-menu-bg-color: #333;
     --el-menu-text-color: #bdc6cd;

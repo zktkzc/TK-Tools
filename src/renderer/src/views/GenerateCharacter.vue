@@ -27,7 +27,7 @@ const handleSubmit = (value: string): void => {
       <div class="h-full relative">
         <el-input v-model="result" type="textarea" resize="none" class="h-full" />
         <div class="absolute bottom-1 right-1 flex items-center gap-1">
-          <el-checkbox label="引号" size="small" value="number" />
+          <el-checkbox label="添加引号" size="small" value="number" />
           <el-input v-model="split" class="split-input">
             <template #prepend>分隔符</template>
           </el-input>
@@ -35,10 +35,10 @@ const handleSubmit = (value: string): void => {
       </div>
     </div>
     <div
-      class="h-[42px] w-full border dark:border-[#4c4d4f] flex items-center justify-center rounded-md"
+      class="h-[42px] w-full border border-[#DCDFE6] dark:border-[#4c4d4f] flex items-center justify-center rounded-md"
     >
-      <div class="w-[60%] flex items-center justify-center gap-1">
-        <div class="flex w-[60%] h-full items-center">
+      <div class="w-[60%] flex items-center justify-center gap-1 setting-panel">
+        <div class="flex w-[60%] h-full items-center characters-setting">
           <el-input v-model="characters" class="flex-1" readonly />
           <el-button class="w-[32px]" @click="showDialog = true">
             <el-tooltip content="设置" placement="top" :effect="getSystemThemeMode()">
@@ -46,12 +46,12 @@ const handleSubmit = (value: string): void => {
             </el-tooltip>
           </el-button>
         </div>
-        <div class="w-[170px]">
+        <div class="w-[130px]">
           <el-input v-model="length" type="number" class="length-input">
             <template #prepend>长度</template>
           </el-input>
         </div>
-        <div class="w-[170px]">
+        <div class="w-[130px]">
           <el-input v-model="count" type="number" class="count-input">
             <template #prepend>数量</template>
           </el-input>
@@ -73,9 +73,13 @@ const handleSubmit = (value: string): void => {
 <style lang="scss" scoped>
 :deep(.el-textarea__inner) {
   height: 100%;
-  outline: #4c4d4f solid 1px;
   box-shadow: none !important;
   @apply dark:bg-[#212123] dark:text-[#BDC6CD];
+  outline: #dcdfe6 solid 1px;
+
+  @media (prefers-color-scheme: dark) {
+    outline: #4c4d4f solid 1px;
+  }
 
   &:focus {
     box-shadow: none !important;
@@ -108,6 +112,13 @@ const handleSubmit = (value: string): void => {
 }
 
 :deep(.el-button) {
+  --el-button-bg-color: #ffffff;
+  --el-button-border-color: #dcdfe6;
+  --el-button-hover-bg-color: #ffffff;
+  --el-button-hover-border-color: #18bc9c;
+  --el-button-hover-text-color: #18bc9c;
+  --el-button-active-border-color: #18bc9c;
+
   @media (prefers-color-scheme: dark) {
     --el-button-bg-color: #202124;
     --el-button-border-color: #4c4d4f;
@@ -119,8 +130,10 @@ const handleSubmit = (value: string): void => {
 }
 
 :deep(.el-checkbox) {
-  @apply border dark:border-[#4C4D4F] dark:text-[#BBC6CE] dark:hover:border-[#18bc9c] dark:hover:text-[#18bc9c]
+  @apply border text-[#515A6E] hover:border-[#18bc9c] dark:border-[#4C4D4F] dark:text-[#BBC6CE] dark:hover:border-[#18bc9c] dark:hover:text-[#18bc9c]
   m-0 px-2 rounded-md cursor-pointer;
+
+  --el-checkbox-input-border-color-hover: #18bc9c;
 }
 
 :deep(.el-checkbox__inner) {
@@ -128,10 +141,34 @@ const handleSubmit = (value: string): void => {
 }
 
 :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
-  @apply dark:bg-[#18bc9c] border dark:border-[#18bc9c];
+  @apply bg-[#18bc9c] border border-[#18bc9c];
 }
 
 :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
-  @apply dark:text-[#18bc9c];
+  @apply text-[#18bc9c];
+}
+
+.characters-setting {
+  :deep(.el-input__wrapper) {
+    @apply rounded-tr-none rounded-br-none h-[32px] border-r-0 cursor-default;
+  }
+
+  :deep(.el-input__inner) {
+    @apply cursor-default;
+  }
+
+  :deep(.el-button) {
+    @apply rounded-tl-none rounded-bl-none;
+  }
+}
+
+.setting-panel {
+  :deep(.el-input__wrapper) {
+    @apply h-[32px];
+  }
+
+  :deep(.el-input-group__prepend) {
+    @apply h-[32px];
+  }
 }
 </style>

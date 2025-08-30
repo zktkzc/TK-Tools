@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SettingConfig, Browser } from '@icon-park/vue-next'
+import { Browser, SettingConfig } from '@icon-park/vue-next'
 import config from '../../../../package.json'
 
 const openDevTools = (): void => {
@@ -9,7 +9,7 @@ const openDevTools = (): void => {
 
 <template>
   <div
-    class="w-full h-[30px] text-sm leading-[30px] text-center bg-gray-200 dark:bg-[#333] dark:text-[#BDC6CD] rounded-bl-xl rounded-br-xl relative"
+    class="w-full h-[30px] text-sm leading-[30px] text-center border-t border-[#dcdfe6] dark:border-[#4c4d4f] bg-[#F7F7F7] text-[#515A6E] dark:bg-[#333] dark:text-[#BDC6CD] rounded-bl-xl rounded-br-xl relative"
     style="user-select: none"
   >
     tkzc00作品&nbsp;v{{ config.version }}
@@ -19,7 +19,7 @@ const openDevTools = (): void => {
           theme="outline"
           size="24"
           :stroke-width="4"
-          class="cursor-pointer hover:text-[#58B59A]"
+          class="cursor-pointer text-[#515A6E] dark:text-[#BDC6CD] hover:text-[#58B59A]"
           @click="openDevTools"
         />
       </el-tooltip>
@@ -28,7 +28,7 @@ const openDevTools = (): void => {
           theme="filled"
           size="24"
           :stroke-width="4"
-          class="text-[#BDC6CD] hover:text-[#58B59A] cursor-pointer flex items-center"
+          class="text-[#515A6E] dark:text-[#BDC6CD] hover:text-[#58B59A] cursor-pointer flex items-center"
         />
       </el-tooltip>
     </div>

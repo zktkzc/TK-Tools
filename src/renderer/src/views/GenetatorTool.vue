@@ -16,7 +16,7 @@ const menuList = [
 ]
 const activeMenu = ref(0)
 const router = useRouter()
-const handleChange = (value): void => {
+const handleChange = (value: number): void => {
   const item = menuList.find((item) => item.value === value)
   router.push(item!.path)
 }
@@ -43,26 +43,31 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 :deep(.el-radio) {
+  margin-right: 10px;
+  --el-radio-text-color: #515a6e;
+  --el-radio-input-border-color-hover: #18bc9c;
+
   @media (prefers-color-scheme: dark) {
     --el-radio-text-color: #bdc6cd;
+    --el-radio-input-bg-color: #252525;
   }
+}
+
+:deep(.el-radio__inner) {
+  @apply dark:border-[#4C4D4F];
 }
 
 :deep(.el-radio__input.is-checked + .el-radio__label) {
-  @media (prefers-color-scheme: dark) {
-    color: #18bc9c !important;
-  }
+  color: #18bc9c !important;
 }
 
 :deep(.el-radio__input.is-checked .el-radio__inner) {
-  @media (prefers-color-scheme: dark) {
-    background-color: transparent;
-    border-color: #18bc9c;
+  background-color: transparent;
+  border-color: #18bc9c;
 
-    &::after {
-      background-color: #18bc9c !important;
-      transform: translate(-50%, -50%) scale(2);
-    }
+  &::after {
+    background-color: #18bc9c !important;
+    transform: translate(-50%, -50%) scale(2);
   }
 }
 </style>

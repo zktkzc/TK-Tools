@@ -167,19 +167,27 @@ const copy = (value: string): void => {
 </template>
 
 <style lang="scss" scoped>
+:deep(.el-textarea) {
+  --el-input-placeholder-color: #a8abb2;
+}
+
 :deep(.el-textarea__inner) {
   height: 100%;
-  outline: #4c4d4f solid 1px;
+  @apply text-xs dark:bg-[#212123] dark:text-slate-300;
   box-shadow: none !important;
-  @apply text-xs;
+  outline: #dcdfe6 solid 1px;
+
+  @media (prefers-color-scheme: dark) {
+    outline: #4c4d4f solid 1px;
+  }
 
   &:focus {
     box-shadow: none !important;
     outline: #18bc9c solid 1px;
-  }
 
-  @media (prefers-color-scheme: dark) {
-    @apply bg-[#212123] text-slate-300;
+    @media (prefers-color-scheme: dark) {
+      outline: #18bc9c solid 1px;
+    }
   }
 }
 
@@ -188,7 +196,11 @@ const copy = (value: string): void => {
     @apply cursor-default;
 
     &:focus {
-      outline: #4c4d4f solid 1px !important;
+      outline: #dcdfe6 solid 1px !important;
+
+      @media (prefers-color-scheme: dark) {
+        outline: #4c4d4f solid 1px !important;
+      }
     }
   }
 }
@@ -207,6 +219,8 @@ const copy = (value: string): void => {
 .dropdown {
   :deep(.el-button) {
     @apply bg-transparent font-normal dark:text-[#B7C3CB] dark:border-[#4c4d4f];
+    --el-button-hover-border-color: #18bc9c;
+    --el-button-hover-text-color: #18bc9c;
   }
 }
 </style>
