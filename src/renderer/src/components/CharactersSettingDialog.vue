@@ -50,38 +50,42 @@ onMounted(() => {
 
 <template>
   <el-dialog :model-value="showDialog" :show-close="false" class="my-dialog" @close="closeDialog">
-    <template #header>
-      <div
-        class="h-[50px] flex items-center justify-between p-4 text-lg dark:bg-[#333] dark:text-[#BBC6CE] rounded-tl-md rounded-tr-md"
-        style="user-select: none"
-      >
-        设置字符
-        <close
-          theme="outline"
-          size="12"
-          :stroke-width="10"
-          class="cursor-pointer dark:text-[#555B62] dark:hover:text-[#73828C]"
-          @click="closeDialog"
-        />
-      </div>
-    </template>
     <template #default>
-      <div class="p-2 flex flex-col gap-2 dark:bg-[#252525]">
-        <el-input v-model="inputValue" type="textarea" resize="none" />
-        <div class="w-full h-auto flex flex-wrap items-center justify-center gap-2">
-          <el-checkbox-group v-model="checkList" @change="checkChange">
-            <el-checkbox label="数字" size="small" value="number" />
-            <el-checkbox label="小写字母" size="small" value="slow" />
-            <el-checkbox label="大写字母" size="small" value="up" />
-            <el-checkbox label="特殊符号" size="small" value="special" />
-          </el-checkbox-group>
-          <el-button size="small" @click="reset">重置</el-button>
+      <div class="h-[50vh] flex flex-col">
+        <div
+          class="h-[50px] flex items-center border-b border-[#EDF0F3] dark:border-none justify-between p-4 text-lg bg-[#F7F7F7] text-[#676F80] dark:bg-[#333] dark:text-[#BBC6CE] rounded-tl-md rounded-tr-md"
+          style="user-select: none"
+        >
+          设置字符
+          <close
+            theme="outline"
+            size="12"
+            :stroke-width="10"
+            class="cursor-pointer dark:text-[#555B62] dark:hover:text-[#73828C]"
+            @click="closeDialog"
+          />
         </div>
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex items-center p-2 dark:bg-[#333] rounded-bl-md rounded-br-md">
-        <el-button class="w-full setting-button" @click="submit"> 确认 </el-button>
+        <div class="flex-1 h-full p-2 flex flex-col gap-2 bg-[#FFFFFF] dark:bg-[#252525]">
+          <el-input v-model="inputValue" type="textarea" resize="none" class="h-full" />
+          <div class="w-full">
+            <el-checkbox-group
+              v-model="checkList"
+              class="w-full flex items-center gap-2 flex-wrap"
+              @change="checkChange"
+            >
+              <el-checkbox label="数字" size="small" value="number" />
+              <el-checkbox label="小写字母" size="small" value="slow" />
+              <el-checkbox label="大写字母" size="small" value="up" />
+              <el-checkbox label="特殊符号" size="small" value="special" />
+              <el-button size="small" @click="reset">重置</el-button>
+            </el-checkbox-group>
+          </div>
+        </div>
+        <div
+          class="h-[50px] flex items-center border-t border-[#EDF0F3] dark:border-none p-2 bg-[#F7F7F7] dark:bg-[#333] rounded-bl-md rounded-br-md"
+        >
+          <el-button class="w-full setting-button" @click="submit"> 确认 </el-button>
+        </div>
       </div>
     </template>
   </el-dialog>
@@ -90,53 +94,59 @@ onMounted(() => {
 <style scoped lang="scss">
 :deep(.el-textarea__inner) {
   height: 100%;
-  outline: #4c4d4f solid 1px;
   box-shadow: none !important;
   @apply dark:bg-[#212123] dark:text-[#BDC6CD];
+  outline: 1px solid #dcdfe6;
+
+  @media (prefers-color-scheme: dark) {
+    outline: #4c4d4f solid 1px;
+  }
 
   &:focus {
     box-shadow: none !important;
-    border: 1px solid #18bc9c;
+    outline: 1px solid #18bc9c;
   }
 }
 
 :deep(.el-button) {
+  --el-button-text-color: #515a6e;
+  --el-button-hover-bg-color: #fff;
+  --el-button-hover-border-color: #18bc9c;
+  --el-button-hover-text-color: #18bc9c;
+  --el-button-active-border-color: #18bc9c;
+
   @media (prefers-color-scheme: dark) {
+    --el-button-text-color: #bbc6ce;
     --el-button-bg-color: #202124;
     --el-button-border-color: #4c4d4f;
     --el-button-hover-bg-color: #202124;
-    --el-button-hover-border-color: #18bc9c;
-    --el-button-hover-text-color: #18bc9c;
-    --el-button-active-border-color: #18bc9c;
   }
 }
 
 .el-button.setting-button {
-  @media (prefers-color-scheme: dark) {
-    --el-button-bg-color: #18bc9c;
-    --el-button-text-color: #fff;
-    --el-button-border-color: #18bc9c;
-    --el-button-hover-bg-color: #48c9b0;
-    --el-button-hover-border-color: #18bc9c;
-    --el-button-hover-text-color: #fff;
-    --el-button-active-border-color: #18bc9c;
-  }
+  --el-button-bg-color: #18bc9c;
+  --el-button-text-color: #fff;
+  --el-button-border-color: #18bc9c;
+  --el-button-hover-bg-color: #48c9b0;
+  --el-button-hover-border-color: #18bc9c;
+  --el-button-hover-text-color: #fff;
+  --el-button-active-border-color: #18bc9c;
 }
 
 :deep(.el-checkbox) {
-  @apply border dark:border-[#4C4D4F] dark:text-[#BBC6CE] dark:hover:border-[#18bc9c] dark:hover:text-[#18bc9c]
+  @apply border text-[#515A6E] dark:border-[#4C4D4F] dark:text-[#BBC6CE] hover:border-[#18bc9c] hover:text-[#18bc9c]
   m-0 px-2 rounded-md cursor-pointer;
 }
 
 :deep(.el-checkbox__inner) {
-  @apply dark:bg-[#202124] border dark:border-[#4C4D4F] dark:hover:border-[#18bc9c];
+  @apply dark:bg-[#202124] border border-[#DCDFE6] dark:border-[#4C4D4F] hover:border-[#18bc9c];
 }
 
 :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
-  @apply dark:bg-[#18bc9c] border dark:border-[#18bc9c];
+  @apply bg-[#18bc9c] border border-[#18bc9c];
 }
 
 :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
-  @apply dark:text-[#18bc9c];
+  @apply text-[#18bc9c];
 }
 </style>
