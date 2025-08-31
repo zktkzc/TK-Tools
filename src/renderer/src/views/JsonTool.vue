@@ -71,8 +71,8 @@ const repair = (): void => {
 :deep(.el-button--primary) {
   --el-button-bg-color: #29a745;
   --el-button-border-color: #29a745;
-  --el-button-hover-bg-color: #6ebfa8;
-  --el-button-hover-border-color: #6ebfa8;
+  --el-button-hover-bg-color: #23923d;
+  --el-button-hover-border-color: #23923d;
 }
 
 :deep(.jv-container) {
