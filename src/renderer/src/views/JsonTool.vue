@@ -5,11 +5,13 @@ import { JsonViewer } from 'vue3-json-viewer'
 import 'vue3-json-viewer/dist/vue3-json-viewer.css'
 import { ElMessage } from 'element-plus'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
+import Editor from '@renderer/components/Editor.vue'
 
 const jsonStr = ref()
 const jsonData = ref({})
 const { getSystemThemeMode } = useSystemThemeStore()
 
+const test = ref('{"name": "John", "age": 30, "city": "New York"}')
 const format = (): void => {
   try {
     jsonData.value = JSON.parse(jsonStr.value)
@@ -39,12 +41,15 @@ const repair = (): void => {
         resize="none"
         placeholder="请输入JSON字符串..."
       />
-      <json-viewer
+      <div class="h-full border rounded-md">
+        <Editor :code="test" />
+      </div>
+      <!-- <json-viewer
         :value="jsonData"
         :theme="getSystemThemeMode()"
         copyable
         class="h-full overflow-auto border"
-      />
+      /> -->
     </div>
     <div class="h-[40px] flex items-center px-2">
       <el-button type="primary" @click="format">格式化</el-button>
@@ -58,6 +63,7 @@ const repair = (): void => {
   height: 100%;
   outline: #29a745 solid 1px;
   box-shadow: none !important;
+  @apply rounded-md;
 
   &:focus {
     box-shadow: none !important;
