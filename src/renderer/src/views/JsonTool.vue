@@ -41,7 +41,7 @@ const repair = (): void => {
         resize="none"
         placeholder="请输入JSON字符串..."
       />
-      <div class="h-full border rounded-md">
+      <div class="h-full border rounded-md border-[#29a745]">
         <Editor :code="test" />
       </div>
       <!-- <json-viewer

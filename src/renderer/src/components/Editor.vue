@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import CodeMirror from 'vue-codemirror6'
 import { json, jsonParseLinter } from '@codemirror/lang-json'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
@@ -10,6 +10,10 @@ const props = defineProps({
     type: String,
     default: ''
   }
+})
+
+const extentsions = computed(() => {
+  return [getSystemThemeMode() === 'dark' ? oneDark : []]
 })
 
 const { getSystemThemeMode } = useSystemThemeStore()
@@ -26,12 +30,20 @@ const value = ref('{"name": "John", "age": 30, "city": "New York"}')
     :dark="getSystemThemeMode() === 'dark'"
     :gutter="true"
     class="h-full"
-    :extensions="[oneDark]"
+    :extensions="extentsions"
   />
 </template>
 
 <style lang="scss" scoped>
 :deep(.cm-editor) {
   height: 100%;
+}
+
+:deep(.cm-editor.cm-focused) {
+  outline: none;
+}
+
+:deep(.cm-gutters.cm-gutters-before) {
+  @apply rounded-tl-md rounded-bl-md;
 }
 </style>
