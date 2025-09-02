@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Browser, SettingConfig } from '@icon-park/vue-next'
 import config from '../../../../package.json'
+import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
+
+const { getSystemThemeMode } = useSystemThemeStore()
 
 const openDevTools = (): void => {
   window.api.openDevTools()
@@ -14,7 +17,7 @@ const openDevTools = (): void => {
   >
     tkzc00作品&nbsp;v{{ config.version }}
     <div class="h-full absolute top-0 right-0 flex items-center justify-center gap-2 mx-2">
-      <el-tooltip content="打开开发者工具">
+      <el-tooltip content="打开开发者工具" :effect="getSystemThemeMode()">
         <browser
           theme="outline"
           size="24"
@@ -23,7 +26,7 @@ const openDevTools = (): void => {
           @click="openDevTools"
         />
       </el-tooltip>
-      <el-tooltip content="设置">
+      <el-tooltip content="设置" :effect="getSystemThemeMode()">
         <setting-config
           theme="filled"
           size="24"

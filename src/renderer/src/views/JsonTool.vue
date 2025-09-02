@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { jsonrepair } from 'jsonrepair'
 import { ref } from 'vue'
-import { JsonViewer } from 'vue3-json-viewer'
-import 'vue3-json-viewer/dist/vue3-json-viewer.css'
 import { ElMessage } from 'element-plus'
-import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import Editor from '@renderer/components/Editor.vue'
 
 const jsonStr = ref()
-const jsonData = ref({})
-const { getSystemThemeMode } = useSystemThemeStore()
+const result = ref()
 
-const test = ref('{"name": "John", "age": 30, "city": "New York"}')
 const format = (): void => {
   try {
-    jsonData.value = JSON.parse(jsonStr.value)
+    result.value = JSON.stringify(jsonStr.value, null, 4)
   } catch (e) {
     const error = e as SyntaxError
     ElMessage.error(`❌ ${error.message || '未知错误'}`)
@@ -33,23 +28,13 @@ const repair = (): void => {
 
 <template>
   <div class="m-2 flex flex-col justify-between gap-1 dark:bg-[#252525]">
-    <div class="grid grid-flow-row grid-cols-2 h-[calc(100vh-145px)] gap-1">
-      <el-input
-        v-model="jsonStr"
-        type="textarea"
-        autofocus
-        resize="none"
-        placeholder="请输入JSON字符串..."
-      />
-      <div class="h-full border rounded-md border-[#29a745]">
-        <Editor :code="test" />
+    <div class="grid grid-flow-row grid-cols-2 h-[calc(100vh-145px)] gap-2">
+      <div class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px]">
+        <Editor :code="jsonStr" lang="json" />
       </div>
-      <!-- <json-viewer
-        :value="jsonData"
-        :theme="getSystemThemeMode()"
-        copyable
-        class="h-full overflow-auto border"
-      /> -->
+      <div class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px]">
+        <Editor :code="result" lang="json" />
+      </div>
     </div>
     <div class="h-[40px] flex items-center px-2">
       <el-button type="primary" @click="format">格式化</el-button>

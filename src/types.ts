@@ -4,3 +4,5 @@ export enum WinTitleAction {
   Maximize = 'maximize',
   Unmaximize = 'unmaximize'
 }
+
+export type LangType = 'json'
