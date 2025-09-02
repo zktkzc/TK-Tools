@@ -57,4 +57,17 @@
     --el-dialog-padding-primary: 0;
     @apply h-fit w-[50%] rounded-md bg-transparent;
   }
+
+  .syntax-error {
+    max-width: calc(100vw - 100px) !important;
+    width: max-content !important;
+    top: 30px !important;
+
+    .el-message__content {
+      line-height: 1.2rem;
+      font-family: monospace;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+  }
 }

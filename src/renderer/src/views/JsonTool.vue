@@ -4,22 +4,39 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import Editor from '@renderer/components/Editor.vue'
 import { Down } from '@icon-park/vue-next'
+import { format } from 'prettier/standalone'
+import babel from 'prettier/plugins/babel'
+import estree from 'prettier/plugins/estree'
 
 const jsonStr = ref()
 const result = ref()
 
-const validate = (): boolean => {
-  return true
+const validate = (): Promise<string> => {
+  return format(jsonStr.value, {
+    parser: 'json5',
+    plugins: [babel, estree],
+    quoteProps: 'preserve',
+    trailingComma: 'none',
+    tabWidth: Number(activeDropItem.value.command),
+    printWidth: 1
+  })
 }
 
-const format = (): void => {
-  try {
-    if (!validate()) return
-    result.value = JSON.stringify(jsonStr.value, null, 4)
-  } catch (e) {
-    const error = e as SyntaxError
-    ElMessage.error(`❌ ${error.message || '未知错误'}`)
-  }
+const beautify = (): void => {
+  validate()
+    .catch((e: SyntaxError) => {
+      console.error(e.message)
+      ElMessage.error({
+        message: e.message,
+        grouping: true,
+        customClass: 'syntax-error'
+      })
+    })
+    .then((value: string | void) => {
+      console.log(value)
+      result.value = value
+      // result.value = JSON.stringify(jsonStr.value, null, 4)
+    })
 }
 
 const repair = (): void => {
@@ -84,7 +101,7 @@ const handleCommand = (command: string): void => {
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-button type="primary" @click="format">格式化</el-button>
+      <el-button type="primary" @click="beautify">格式化</el-button>
       <el-button type="primary" @click="repair">JSON修复</el-button>
       <el-button type="primary" @click="minimal">压缩</el-button>
       <el-button type="primary" @click="minimal">转义</el-button>
