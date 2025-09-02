@@ -1,16 +1,18 @@
 <script lang="ts" setup>
-import { computed, PropType, ref } from 'vue'
+import { computed, PropType } from 'vue'
 import CodeMirror from 'vue-codemirror6'
 import { json } from '@codemirror/lang-json'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { LangType } from '../../../types'
+import { EditorView } from '@codemirror/view'
 
-const props = defineProps({
-  code: {
-    type: String,
-    default: ''
-  },
+const code = defineModel('code', {
+  type: String,
+  default: ''
+})
+
+defineProps({
   lang: {
     type: String as PropType<LangType>,
     default: 'json'
@@ -21,30 +23,28 @@ const props = defineProps({
   }
 })
 
+const { getSystemThemeMode } = useSystemThemeStore()
 const lang_map = { json: { lang: json() } }
 
 const getLang = (type: string) => {
   return lang_map[type]
 }
 
-const extentsions = computed(() => {
-  return [getSystemThemeMode() === 'dark' ? oneDark : []]
+const extensions = computed(() => {
+  return [getSystemThemeMode() === 'dark' ? oneDark : []].concat([EditorView.lineWrapping])
 })
-
-const { getSystemThemeMode } = useSystemThemeStore()
-const value = ref(props.code)
 </script>
 
 <template>
   <code-mirror
     id="editor"
-    v-model="value"
+    v-model="code"
     :lang="getLang(lang).lang"
     basic
     :dark="getSystemThemeMode() === 'dark'"
     :gutter="gutter"
     class="h-full"
-    :extensions="extentsions"
+    :extensions="extensions"
   />
 </template>
 
