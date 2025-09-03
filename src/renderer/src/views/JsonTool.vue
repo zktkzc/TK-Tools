@@ -111,7 +111,7 @@ const clear = (): void => {
 </script>
 
 <template>
-  <div class="m-2 h-[calc(100vh-145px)] flex flex-col justify-between gap-1.5 dark:bg-[#252525]">
+  <div class="m-2 h-[calc(100vh-102px)] flex flex-col justify-between gap-1 dark:bg-[#252525]">
     <div class="h-full grid grid-flow-row grid-cols-2 gap-2">
       <div
         class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
