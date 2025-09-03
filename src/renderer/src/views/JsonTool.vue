@@ -10,6 +10,12 @@ import estree from 'prettier/plugins/estree'
 
 const jsonStr = ref()
 const result = ref()
+const needTransfer = ref(false)
+
+const copy = () => {
+  navigator.clipboard.writeText(result.value)
+  ElMessage.success({ message: '复制成功', grouping: true, customClass: 'success' })
+}
 
 const validate = (): Promise<string> => {
   return format(jsonStr.value, {
@@ -25,7 +31,6 @@ const validate = (): Promise<string> => {
 const beautify = (): void => {
   validate()
     .catch((e: SyntaxError) => {
-      console.error(e.message)
       ElMessage.error({
         message: e.message,
         grouping: true,
@@ -33,27 +38,59 @@ const beautify = (): void => {
       })
     })
     .then((value: string | void) => {
-      console.log(value)
-      result.value = value
-      // result.value = JSON.stringify(jsonStr.value, null, 4)
+      if (value) {
+        result.value = value
+        copy()
+      } else {
+        result.value = ''
+      }
     })
 }
 
 const repair = (): void => {
   try {
     if (!jsonStr.value || jsonStr.value.trim() === '') {
-      ElMessage.error({ message: '请输入JSON字符串', grouping: true })
+      ElMessage.error({ message: '请输入JSON字符串', grouping: true, customClass: 'error' })
       return
     }
 
     jsonStr.value = jsonrepair(jsonStr.value)
-    ElMessage.success({ message: '已自动修复语法错误', grouping: true })
+    beautify()
   } catch (e) {
-    ElMessage.error({ message: `修复失败: ${(e as Error).message}`, grouping: true })
+    ElMessage.error({
+      message: `修复失败: ${(e as Error).message}`,
+      grouping: true,
+      customClass: 'error'
+    })
   }
 }
 
-const minimal = (): void => {}
+const minimal = (): void => {
+  validate()
+    .catch((e: SyntaxError) => {
+      ElMessage.error({
+        message: e.message,
+        grouping: true,
+        customClass: 'syntax-error'
+      })
+    })
+    .then((value: string | void) => {
+      if (value) {
+        result.value = value.replaceAll(/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '')
+        copy()
+      } else {
+        result.value = ''
+      }
+    })
+}
+
+const transfer = (): void => {
+  if (needTransfer.value) {
+    result.value = result.value.replaceAll('"', '\\"')
+  } else {
+    result.value = result.value.replaceAll('\\"', '"')
+  }
+}
 
 const dropDownItems = [
   { command: '0', label: '无缩进' },
@@ -62,19 +99,28 @@ const dropDownItems = [
   { command: '6', label: '缩进空格 6' },
   { command: '8', label: '缩进空格 8' }
 ]
-const activeDropItem = ref<{ command: string; label: string }>(dropDownItems[0])
+const activeDropItem = ref<{ command: string; label: string }>(dropDownItems[2])
 const handleCommand = (command: string): void => {
   activeDropItem.value = dropDownItems.find((item) => item.command === command)!
+}
+
+const clear = (): void => {
+  jsonStr.value = ''
+  result.value = ''
 }
 </script>
 
 <template>
-  <div class="m-2 flex flex-col justify-between gap-1 dark:bg-[#252525]">
-    <div class="grid grid-flow-row grid-cols-2 h-[calc(100vh-145px)] gap-2">
-      <div class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px]">
+  <div class="m-2 h-[calc(100vh-145px)] flex flex-col justify-between gap-1.5 dark:bg-[#252525]">
+    <div class="h-full grid grid-flow-row grid-cols-2 gap-2">
+      <div
+        class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
+      >
         <Editor v-model:code="jsonStr" lang="json" />
       </div>
-      <div class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px]">
+      <div
+        class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
+      >
         <Editor v-model:code="result" lang="json" />
       </div>
     </div>
@@ -104,7 +150,8 @@ const handleCommand = (command: string): void => {
       <el-button type="primary" @click="beautify">格式化</el-button>
       <el-button type="primary" @click="repair">JSON修复</el-button>
       <el-button type="primary" @click="minimal">压缩</el-button>
-      <el-button type="primary" @click="minimal">转义</el-button>
+      <el-checkbox v-model="needTransfer" @change="transfer">转义</el-checkbox>
+      <el-button type="primary" @click="clear">清空输入</el-button>
     </div>
   </div>
 </template>
@@ -158,5 +205,22 @@ const handleCommand = (command: string): void => {
       color: #29a745 !important;
     }
   }
+}
+
+:deep(.el-checkbox) {
+  @apply border text-[#515A6E] dark:border-[#4C4D4F] dark:text-[#BBC6CE] hover:border-[#29A745] hover:text-[#29A745]
+  m-0 px-2 rounded-md cursor-pointer;
+}
+
+:deep(.el-checkbox__inner) {
+  @apply dark:bg-[#202124] border border-[#DCDFE6] dark:border-[#4C4D4F] hover:border-[#29A745];
+}
+
+:deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  @apply bg-[#29A745] border border-[#29A745];
+}
+
+:deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
+  @apply text-[#29A745];
 }
 </style>
