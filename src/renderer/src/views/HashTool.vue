@@ -35,7 +35,7 @@ const handleInput = async (value: string): Promise<void> => {
 const copy = (value: string): void => {
   if (value === '') return
   navigator.clipboard.writeText(value)
-  ElMessage.success('复制成功')
+  ElMessage.success({ message: '复制成功', grouping: true, customClass: 'success' })
 }
 </script>
 

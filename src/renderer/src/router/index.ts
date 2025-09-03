@@ -17,7 +17,19 @@ const router = createRouter({
         {
           path: '/date',
           name: 'date',
-          component: () => import('../views/DateTool.vue')
+          component: () => import('../views/DateTool.vue'),
+          children: [
+            {
+              path: '/date/timestamp',
+              name: 'timestamp',
+              component: () => import('../views/Timestamp.vue')
+            },
+            {
+              path: '/date/calculator',
+              name: 'dateCalculator',
+              component: () => import('../views/DateCalculator.vue')
+            }
+          ]
         },
         {
           path: '/hash',

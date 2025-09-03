@@ -85,17 +85,17 @@
     }
   }
 
-    .success {
+  .success {
+    @media (prefers-color-scheme: dark) {
+      background-color: #0A2321 !important;
+      border-color: #29371F !important;
+    }
+
+    .el-message__content {
       @media (prefers-color-scheme: dark) {
-        background-color: #0A2321 !important;
-        border-color: #29371F !important;
-      }
-  
-      .el-message__content {
-        @media (prefers-color-scheme: dark) {
-          color: #58B99D !important;
-          font-family: Menlo, Consolas, 'Courier New', monospace !important;
-        }
+        color: #58B99D !important;
+        font-family: Menlo, Consolas, 'Courier New', monospace !important;
       }
     }
+  }
 }
