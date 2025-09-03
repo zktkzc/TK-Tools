@@ -2,7 +2,9 @@
 import { Browser, SettingConfig } from '@icon-park/vue-next'
 import config from '../../../../package.json'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const { getSystemThemeMode } = useSystemThemeStore()
 
 const openDevTools = (): void => {
@@ -32,6 +34,7 @@ const openDevTools = (): void => {
           size="24"
           :stroke-width="4"
           class="text-[#515A6E] dark:text-[#BDC6CD] hover:text-[#29a745] cursor-pointer flex items-center"
+          @click="router.push('/config')"
         />
       </el-tooltip>
     </div>
