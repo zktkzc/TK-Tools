@@ -50,7 +50,6 @@ const copy = (value: string): void => {
           type="textarea"
           placeholder="请输入文本..."
           resize="none"
-          autofocus
           class="h-full"
           @input="handleInput"
         />
