@@ -1,8 +1,9 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, nativeTheme, shell } from 'electron'
 import { join } from 'path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import './ipc'
+import { getData } from './store'
 
 function createWindow(): void {
   // Create the browser window.
@@ -24,6 +25,10 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+
+    const settings = getData('settings')
+    console.log(settings)
+    if (settings) nativeTheme.themeSource = settings.theme
 
     mainWindow.on('maximize', () => {
       mainWindow.webContents.send('winIsMax', true)

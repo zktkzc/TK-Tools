@@ -2,10 +2,10 @@
 import { computed, PropType } from 'vue'
 import CodeMirror from 'vue-codemirror6'
 import { json } from '@codemirror/lang-json'
-import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { LangType } from '../../../types'
 import { EditorView } from '@codemirror/view'
+import { computedAsync } from '@vueuse/core'
 
 const code = defineModel('code', {
   type: String,
@@ -27,15 +27,18 @@ defineProps({
   }
 })
 
-const { getSystemThemeMode } = useSystemThemeStore()
 const lang_map = { json: { lang: json() } }
 
 const getLang = (type: string) => {
   return lang_map[type]
 }
 
+const themeMode = computedAsync(async () => {
+  return await window.api.getThemeMode()
+})
+
 const extensions = computed(() => {
-  return [getSystemThemeMode() === 'dark' ? oneDark : []].concat([EditorView.lineWrapping])
+  return [themeMode.value === 'dark' ? oneDark : []].concat([EditorView.lineWrapping])
 })
 </script>
 
@@ -45,7 +48,7 @@ const extensions = computed(() => {
     v-model="code"
     :lang="getLang(lang).lang"
     basic
-    :dark="getSystemThemeMode() === 'dark'"
+    :dark="themeMode === 'dark'"
     :gutter="gutter"
     class="h-full"
     :extensions="extensions"

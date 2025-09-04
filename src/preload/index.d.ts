@@ -1,5 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import { WinTitleAction } from '../types'
+import { SettingsType, WinTitleAction } from '../types'
 
 declare global {
   interface Window {
@@ -7,10 +7,13 @@ declare global {
     api: {
       winTitleOp: (action: WinTitleAction) => void
       openDevTools: () => void
-      getSystemTheme: () => Promise<string>
+      getThemeMode: () => Promise<string>
+      changeThemeMode: (value: string) => void
       onThemeChange: (callback: (theme: string) => void) => any
       calculateHash: (originValue: string) => any
       switchOnTop: (value: boolean) => void
+      changeSettings: (settings: SettingsType) => void
+      getSettings: () => Promise<SettingsType>
     }
   }
 }

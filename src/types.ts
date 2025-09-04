@@ -8,5 +8,5 @@ export enum WinTitleAction {
 export type LangType = 'json'
 
 export type SettingsType = {
-  theme: 'dark' | 'light' | 'auto'
+  theme: 'dark' | 'light' | 'system'
 }

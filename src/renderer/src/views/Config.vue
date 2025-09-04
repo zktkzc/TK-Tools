@@ -1,23 +1,27 @@
 <script lang="ts" setup>
 import { ArrowLeft, Setting } from '@icon-park/vue-next'
-import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import { useRoute, useRouter } from 'vue-router'
 import { SettingsType } from '../../../types'
-import { onMounted, ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { useSettingsStore } from '@renderer/store/useSettingsStore'
+import { computedAsync } from '@vueuse/core'
 
-const { getSystemThemeMode } = useSystemThemeStore()
-const { setSettings, getSettings } = useSettingsStore()
+const { setSettings, getSettings, defaultSettings } = useSettingsStore()
 const router = useRouter()
 const route = useRoute()
-const settings = ref<SettingsType>({} as SettingsType)
+const settings = ref<SettingsType>(getSettings() || defaultSettings)
+const themeMode = computedAsync(async () => {
+  return await window.api.getThemeMode()
+})
 
-const changeTheme = (value: string) => {
-  console.log(value)
+const changeTheme = (value: 'dark' | 'light' | 'system') => {
+  window.api.changeThemeMode(value)
+  settings.value.theme = value
 }
 
-onMounted(() => {
-  settings.value = Object.assign({}, getSettings())
+watchEffect(() => {
+  setSettings(settings.value)
+  window.api.changeSettings(Object.assign({}, settings.value))
 })
 </script>
 
@@ -38,13 +42,13 @@ onMounted(() => {
           }
         "
       >
-        <el-tooltip content="返回" :effect="getSystemThemeMode()">
+        <el-tooltip content="返回" :effect="themeMode">
           <arrow-left theme="outline" size="24" :stroke-width="4" />
         </el-tooltip>
       </div>
       软件设置
     </div>
-    <div class="w-full h-full p-2 overflow-y-auto">
+    <div class="w-full h-full p-2 overflow-y-auto" style="user-select: none">
       <div
         class="w-full h-full dark:text-[#bdc6cd] border dark:border-[#4C4D4F] rounded-md p-2 overflow-y-auto relative"
       >
@@ -53,7 +57,7 @@ onMounted(() => {
             <el-select v-model="settings.theme" @change="changeTheme">
               <el-option label="亮色" value="light" />
               <el-option label="暗色" value="dark" />
-              <el-option label="自动" value="auto" />
+              <el-option label="自动" value="system" />
             </el-select>
           </el-form-item>
         </el-form>

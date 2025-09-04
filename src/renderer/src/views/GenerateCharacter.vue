@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { Refresh, Setting } from '@icon-park/vue-next'
-import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import CharactersSettingDialog from '@renderer/components/CharactersSettingDialog.vue'
+import { computedAsync } from '@vueuse/core'
 
 let records: string[] = []
 const result = ref<string>('')
@@ -14,7 +14,9 @@ const showDialog = ref<boolean>(false)
 const needQuotes = ref<boolean>(false)
 const checkList = ref<string[]>(['number', 'slow', 'up'])
 const charactersSettingDialogRef = ref()
-const { getSystemThemeMode } = useSystemThemeStore()
+const themeMode = computedAsync(async () => {
+  return await window.api.getThemeMode()
+})
 const handleSubmit = (value: string, checkValue: string[]): void => {
   characters.value = value
   checkList.value = checkValue
@@ -108,7 +110,7 @@ watch(
               }
             "
           >
-            <el-tooltip content="设置" placement="top" :effect="getSystemThemeMode()">
+            <el-tooltip content="设置" placement="top" :effect="themeMode">
               <setting theme="outline" size="18" />
             </el-tooltip>
           </el-button>

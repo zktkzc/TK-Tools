@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { WinTitleAction } from '../types'
+import { SettingsType, WinTitleAction } from '../types'
 
 // Custom APIs for renderer
 const api = {
@@ -10,17 +10,23 @@ const api = {
   openDevTools: () => {
     ipcRenderer.send('openDevTools')
   },
-  getSystemTheme: (): Promise<string> => {
-    return ipcRenderer.invoke('getSystemTheme')
+  getThemeMode: (): Promise<string> => {
+    return ipcRenderer.invoke('getThemeMode')
   },
-  onThemeChange: (callback: (theme: string) => void) => {
-    ipcRenderer.on('system-theme-changed', (_, theme) => callback(theme))
+  changeThemeMode: (value: string) => {
+    ipcRenderer.send('changeThemeMode', value)
   },
   calculateHash: (originValue: string) => {
     return ipcRenderer.invoke('calculateHash', originValue)
   },
   switchOnTop: (value: boolean) => {
     ipcRenderer.send('switchOnTop', value)
+  },
+  changeSettings: (settings: SettingsType) => {
+    ipcRenderer.send('changeSettings', settings)
+  },
+  getSettings: () => {
+    return ipcRenderer.invoke('getSettings')
   }
 }
 

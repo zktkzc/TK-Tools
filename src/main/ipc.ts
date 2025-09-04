@@ -6,8 +6,9 @@ import {
   IpcMainInvokeEvent,
   nativeTheme
 } from 'electron'
-import { WinTitleAction } from '../types'
+import { SettingsType, WinTitleAction } from '../types'
 import * as crypto from 'node:crypto'
+import { getData, setData } from './store'
 
 ipcMain.on('winTitleOp', (e: IpcMainEvent, action: WinTitleAction) => {
   const webContents = e.sender
@@ -41,17 +42,8 @@ ipcMain.on('openDevTools', (e: IpcMainEvent) => {
   }
 })
 
-ipcMain.handle('getSystemTheme', () => {
+ipcMain.handle('getThemeMode', () => {
   return nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
-})
-
-nativeTheme.on('updated', () => {
-  const themeMode = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
-
-  // 向所有渲染进程广播主题更新
-  BrowserWindow.getAllWindows().forEach((win) => {
-    win.webContents.send('system-theme-changed', themeMode)
-  })
 })
 
 ipcMain.handle('calculateHash', (_event: IpcMainInvokeEvent, originValue: string) => {
@@ -67,4 +59,16 @@ ipcMain.on('switchOnTop', (event: IpcMainEvent, value: boolean) => {
   if (!win) return
 
   win.setAlwaysOnTop(value)
+})
+
+ipcMain.on('changeSettings', (_event: IpcMainEvent, settings: SettingsType) => {
+  setData('settings', settings)
+})
+
+ipcMain.handle('getSettings', () => {
+  return getData('settings')
+})
+
+ipcMain.on('changeThemeMode', (_event: IpcMainEvent, value: string) => {
+  nativeTheme.themeSource = value as 'dark' | 'light' | 'system'
 })
