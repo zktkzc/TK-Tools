@@ -2,10 +2,22 @@
 import { ArrowLeft, Setting } from '@icon-park/vue-next'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
 import { useRoute, useRouter } from 'vue-router'
+import { SettingsType } from '../../../types'
+import { onMounted, ref } from 'vue'
+import { useSettingsStore } from '@renderer/store/useSettingsStore'
+import { Down } from '@icon-park/vue-next'
 
 const { getSystemThemeMode } = useSystemThemeStore()
+const { setSettings, getSettings } = useSettingsStore()
 const router = useRouter()
 const route = useRoute()
+const settings = ref<SettingsType>({
+  theme: 'auto'
+})
+
+onMounted(() => {
+  settings.value = getSettings()
+})
 </script>
 
 <template>
@@ -32,10 +44,19 @@ const route = useRoute()
       软件设置
     </div>
     <div
-      class="flex-1 dark:text-[#bdc6cd] border dark:border-[#4C4D4F] rounded-md p-2 m-2 overflow-y-auto relative"
+      class="w-full flex-1 dark:text-[#bdc6cd] border dark:border-[#4C4D4F] rounded-md p-2 m-2 overflow-y-auto relative"
     >
+      <el-form :model="settings" label-width="100px">
+        <el-form-item label="主题">
+          <el-select v-model="settings.theme">
+            <el-option label="亮色" value="light" />
+            <el-option label="暗色" value="dark" />
+            <el-option label="自动" value="auto" />
+          </el-select>
+        </el-form-item>
+      </el-form>
       <div
-        class="flex items-center justify-center dark:text-[#515A6E] dark:opacity-15 absolute top-0 left-0 h-full w-full"
+        class="flex items-center justify-center dark:text-[#515A6E] dark:opacity-15 bg-transparent absolute top-0 left-0 h-full w-full"
       >
         <setting theme="outline" size="240" :stroke-width="1" />
       </div>

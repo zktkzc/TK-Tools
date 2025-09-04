@@ -14,7 +14,7 @@ export const useSystemThemeStore = defineStore(
       return systemThemeMode.value
     }
 
-    return { systemThemeMode, setSystemThemeMode, getSystemThemeMode }
+    return { setSystemThemeMode, getSystemThemeMode }
   },
   { persist: true }
 )
