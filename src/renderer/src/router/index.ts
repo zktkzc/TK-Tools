@@ -9,10 +9,9 @@ const router = createRouter({
       redirect: '/home',
       children: [
         {
-          path: '/home',
+          path: 'home',
           name: 'Home',
           component: () => import('../views/Home.vue'),
-          redirect: '/home/json',
           children: [
             {
               path: 'json',
@@ -44,7 +43,7 @@ const router = createRouter({
             {
               path: 'gen',
               name: 'generator',
-              component: () => import('../views/GenetatorTool.vue'),
+              component: () => import('../views/GeneratorTool.vue'),
               children: [
                 {
                   path: 'randomCh',
@@ -59,13 +58,13 @@ const router = createRouter({
               ]
             }
           ]
+        },
+        {
+          path: 'config',
+          name: 'config',
+          component: () => import('../views/Config.vue')
         }
       ]
-    },
-    {
-      path: '/config',
-      name: 'config',
-      component: () => import('../views/Config.vue')
     }
   ]
 }) as Router

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 
 const router = useRouter()
+const route = useRoute()
 const activeIndex = ref('0')
 const menuItems = [
   { index: '0', label: 'JSON工具', path: '/home/json' },
@@ -11,6 +12,16 @@ const menuItems = [
   { index: '3', label: '生成工具', path: '/home/gen' }
 ]
 const handleSelect = (key: string): void => {
+  if (route.query.to) {
+    const toPath = route.query.to as string
+    activeIndex.value =
+      menuItems.find((menu) => {
+        return toPath.startsWith(menu.path)
+      })?.index || '0'
+    router.push(route.query.to as string)
+    return
+  }
+
   const item = menuItems.find((i) => i.index === key)
   if (item) router.push(item.path)
 }

@@ -124,7 +124,7 @@ const clear = (): void => {
         <Editor v-model:code="result" lang="json" />
       </div>
     </div>
-    <div class="h-[40px] flex items-center px-2 gap-2">
+    <div class="h-[40px] flex items-center space-x-2">
       <el-dropdown
         trigger="click"
         class="dropdown"
