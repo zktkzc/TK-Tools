@@ -116,12 +116,12 @@ const clear = (): void => {
       <div
         class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
       >
-        <Editor v-model:code="jsonStr" lang="json" />
+        <Editor v-model:code="jsonStr" lang="json" placeholder="输入" />
       </div>
       <div
         class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
       >
-        <Editor v-model:code="result" lang="json" />
+        <Editor v-model:code="result" lang="json" placeholder="输出" />
       </div>
     </div>
     <div class="h-[40px] flex items-center space-x-2">

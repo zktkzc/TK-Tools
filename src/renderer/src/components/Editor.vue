@@ -20,6 +20,10 @@ defineProps({
   gutter: {
     type: Boolean,
     default: false
+  },
+  placeholder: {
+    type: String,
+    default: ''
   }
 })
 
@@ -45,6 +49,7 @@ const extensions = computed(() => {
     :gutter="gutter"
     class="h-full"
     :extensions="extensions"
+    :placeholder="placeholder"
   />
 </template>
 
