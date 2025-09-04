@@ -6,12 +6,12 @@ const menuList = [
   {
     value: 0,
     label: '时间戳',
-    path: '/date/timestamp'
+    path: '/home/date/timestamp'
   },
   {
     value: 1,
     label: '计算器',
-    path: '/date/calculator'
+    path: '/home/date/calculator'
   }
 ]
 const activeMenu = ref(0)

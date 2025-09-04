@@ -6,12 +6,12 @@ const menuList = [
   {
     value: 0,
     label: '随机字符',
-    path: '/gen/randomCh'
+    path: '/home/gen/randomCh'
   },
   {
     value: 1,
     label: 'UUID',
-    path: '/gen/uuid'
+    path: '/home/gen/uuid'
   }
 ]
 const activeMenu = ref(0)

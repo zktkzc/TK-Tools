@@ -12,47 +12,47 @@ const router = createRouter({
           path: '/home',
           name: 'Home',
           component: () => import('../views/Home.vue'),
-          redirect: '/json',
+          redirect: '/home/json',
           children: [
             {
-              path: '/json',
+              path: 'json',
               name: 'json',
               component: () => import('../views/JsonTool.vue')
             },
             {
-              path: '/date',
+              path: 'date',
               name: 'date',
               component: () => import('../views/DateTool.vue'),
               children: [
                 {
-                  path: '/date/timestamp',
+                  path: 'timestamp',
                   name: 'timestamp',
                   component: () => import('../views/Timestamp.vue')
                 },
                 {
-                  path: '/date/calculator',
+                  path: 'calculator',
                   name: 'dateCalculator',
                   component: () => import('../views/DateCalculator.vue')
                 }
               ]
             },
             {
-              path: '/hash',
+              path: 'hash',
               name: 'hash',
               component: () => import('../views/HashTool.vue')
             },
             {
-              path: '/gen',
+              path: 'gen',
               name: 'generator',
               component: () => import('../views/GenetatorTool.vue'),
               children: [
                 {
-                  path: '/gen/randomCh',
+                  path: 'randomCh',
                   name: 'randomCharacter',
                   component: () => import('../views/GenerateCharacter.vue')
                 },
                 {
-                  path: '/gen/uuid',
+                  path: 'uuid',
                   name: 'uuid',
                   component: () => import('../views/GenerateUUID.vue')
                 }

@@ -5,10 +5,10 @@ import { onMounted, ref } from 'vue'
 const router = useRouter()
 const activeIndex = ref('0')
 const menuItems = [
-  { index: '0', label: 'JSON工具', path: '/json' },
-  { index: '1', label: '日期工具', path: '/date' },
-  { index: '2', label: '哈希工具', path: '/hash' },
-  { index: '3', label: '生成工具', path: '/gen' }
+  { index: '0', label: 'JSON工具', path: '/home/json' },
+  { index: '1', label: '日期工具', path: '/home/date' },
+  { index: '2', label: '哈希工具', path: '/home/hash' },
+  { index: '3', label: '生成工具', path: '/home/gen' }
 ]
 const handleSelect = (key: string): void => {
   const item = menuItems.find((i) => i.index === key)

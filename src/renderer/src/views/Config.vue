@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { ArrowLeft, Setting } from '@icon-park/vue-next'
 import { useSystemThemeStore } from '@renderer/store/useSystemThemeStore'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const { getSystemThemeMode } = useSystemThemeStore()
 const router = useRouter()
+const route = useRoute()
 </script>
 
 <template>
@@ -17,7 +18,12 @@ const router = useRouter()
     >
       <div
         class="h-[32px] w-[32px] absolute top-0 left-2 flex items-center justify-center dark:text-[#bdc6cd] dark:hover:bg-[#2a3531] dark:hover:text-[#29a745] cursor-pointer"
-        @click="router.back()"
+        @click="
+          () => {
+            console.log(route.query)
+            router.push(route.query.from as string)
+          }
+        "
       >
         <el-tooltip content="返回" :effect="getSystemThemeMode()">
           <arrow-left theme="outline" size="24" :stroke-width="4" />
