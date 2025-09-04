@@ -10,6 +10,7 @@ declare global {
       getSystemTheme: () => Promise<string>
       onThemeChange: (callback: (theme: string) => void) => any
       calculateHash: (originValue: string) => any
+      switchOnTop: (value: boolean) => void
     }
   }
 }

@@ -18,6 +18,9 @@ const api = {
   },
   calculateHash: (originValue: string) => {
     return ipcRenderer.invoke('calculateHash', originValue)
+  },
+  switchOnTop: (value: boolean) => {
+    ipcRenderer.send('switchOnTop', value)
   }
 }
 

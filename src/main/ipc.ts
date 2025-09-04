@@ -61,3 +61,10 @@ ipcMain.handle('calculateHash', (_event: IpcMainInvokeEvent, originValue: string
   const sha512 = crypto.createHash('sha512').update(originValue).digest('hex')
   return { md5, sha1, sha256, sha512 }
 })
+
+ipcMain.on('switchOnTop', (event: IpcMainEvent, value: boolean) => {
+  const win: BrowserWindow | null = BrowserWindow.fromWebContents(event.sender)
+  if (!win) return
+
+  win.setAlwaysOnTop(value)
+})
