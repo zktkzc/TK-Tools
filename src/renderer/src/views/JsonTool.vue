@@ -112,7 +112,7 @@ const clear = (): void => {
 
 <template>
   <div class="m-2 h-[calc(100vh-102px)] flex flex-col justify-between gap-1 dark:bg-[#252525]">
-    <div class="h-full grid grid-flow-row grid-cols-2 gap-2">
+    <div class="h-[calc(100vh-40px)] grid grid-flow-row grid-cols-2 gap-2">
       <div
         class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
       >
@@ -124,7 +124,7 @@ const clear = (): void => {
         <Editor v-model:code="result" lang="json" placeholder="输出" />
       </div>
     </div>
-    <div class="h-[40px] flex items-center space-x-2">
+    <div class="h-full max-h-[40px] min-h-[40px] flex items-center gap-2">
       <el-dropdown
         trigger="click"
         class="dropdown"
