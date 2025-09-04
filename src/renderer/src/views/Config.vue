@@ -12,6 +12,10 @@ const router = useRouter()
 const route = useRoute()
 const settings = ref<SettingsType>({} as SettingsType)
 
+const changeTheme = (value: string) => {
+  console.log(value)
+}
+
 onMounted(() => {
   settings.value = Object.assign({}, getSettings())
 })
@@ -45,8 +49,8 @@ onMounted(() => {
         class="w-full h-full dark:text-[#bdc6cd] border dark:border-[#4C4D4F] rounded-md p-2 overflow-y-auto relative"
       >
         <el-form :model="settings" label-width="100px">
-          <el-form-item label="主题">
-            <el-select v-model="settings.theme">
+          <el-form-item label="主题" class="w-[200px]">
+            <el-select v-model="settings.theme" @change="changeTheme">
               <el-option label="亮色" value="light" />
               <el-option label="暗色" value="dark" />
               <el-option label="自动" value="auto" />
