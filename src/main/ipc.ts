@@ -69,6 +69,7 @@ ipcMain.handle('getSettings', () => {
   return getData('settings')
 })
 
-ipcMain.on('changeThemeMode', (_event: IpcMainEvent, value: string) => {
+ipcMain.on('changeThemeMode', (event: IpcMainEvent, value: string) => {
   nativeTheme.themeSource = value as 'dark' | 'light' | 'system'
+  BrowserWindow.fromWebContents(event.sender)?.webContents.send('themeChanged')
 })

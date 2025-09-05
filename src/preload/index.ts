@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, IpcRendererEvent, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { SettingsType, WinTitleAction } from '../types'
 
@@ -27,6 +27,11 @@ const api = {
   },
   getSettings: () => {
     return ipcRenderer.invoke('getSettings')
+  },
+  onThemeChanged: (callback: () => void) => {
+    ipcRenderer.on('themeChanged', () => {
+      callback()
+    })
   }
 }
 

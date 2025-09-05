@@ -14,6 +14,7 @@ declare global {
       switchOnTop: (value: boolean) => void
       changeSettings: (settings: SettingsType) => void
       getSettings: () => Promise<SettingsType>
+      onThemeChanged: (callback: () => void) => any
     }
   }
 }

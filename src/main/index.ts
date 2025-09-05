@@ -27,8 +27,12 @@ function createWindow(): void {
     mainWindow.show()
 
     const settings = getData('settings')
-    console.log(settings)
-    if (settings) nativeTheme.themeSource = settings.theme
+    if (settings) {
+      nativeTheme.themeSource = settings.theme
+      BrowserWindow.getAllWindows().forEach((win) => {
+        win.webContents.send('themeChanged')
+      })
+    }
 
     mainWindow.on('maximize', () => {
       mainWindow.webContents.send('winIsMax', true)

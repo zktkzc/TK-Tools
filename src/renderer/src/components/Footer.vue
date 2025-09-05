@@ -3,6 +3,7 @@ import { Browser, SettingConfig } from '@icon-park/vue-next'
 import config from '../../../../package.json'
 import { useRoute, useRouter } from 'vue-router'
 import { computedAsync } from '@vueuse/core'
+import { onMounted } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -13,6 +14,12 @@ const themeMode = computedAsync(async () => {
 const openDevTools = (): void => {
   window.api.openDevTools()
 }
+
+onMounted(() => {
+  window.api.onThemeChanged(async () => {
+    themeMode.value = await window.api.getThemeMode()
+  })
+})
 </script>
 
 <template>
