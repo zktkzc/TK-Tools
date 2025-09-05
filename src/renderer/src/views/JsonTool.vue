@@ -173,14 +173,25 @@ const clear = (): void => {
 }
 
 :deep(.el-button--primary) {
-  --el-button-bg-color: #252525;
-  --el-button-border-color: #4c4d4f;
-  --el-button-text-color: #bbc6ce;
-  --el-button-hover-bg-color: #252525;
+  --el-button-bg-color: #ffffff;
+  --el-button-text-color: #333;
+  --el-button-border-color: #dddfe5;
+  --el-button-hover-bg-color: #fff;
   --el-button-hover-border-color: #23923d;
   --el-button-hover-text-color: #23923d;
-  --el-button-active-bg-color: #252525;
+  --el-button-active-bg-color: #ffffff;
   --el-button-active-border-color: #23923d;
+
+  @media (prefers-color-scheme: dark) {
+    --el-button-bg-color: #252525;
+    --el-button-border-color: #4c4d4f;
+    --el-button-text-color: #bbc6ce;
+    --el-button-hover-bg-color: #252525;
+    --el-button-hover-border-color: #23923d;
+    --el-button-hover-text-color: #23923d;
+    --el-button-active-bg-color: #252525;
+    --el-button-active-border-color: #23923d;
+  }
 }
 
 .el-button + .el-button {
@@ -192,14 +203,16 @@ const clear = (): void => {
     @apply bg-transparent font-normal dark:text-[#B7C3CB] dark:border-[#4c4d4f];
     height: 32px !important;
 
-    --el-button-bg-color: #252525;
-    --el-button-border-color: #4c4d4f;
-    --el-button-text-color: #bbc6ce;
-    --el-button-hover-bg-color: #252525;
-    --el-button-hover-border-color: #23923d;
-    --el-button-hover-text-color: #23923d;
-    --el-button-active-bg-color: #252525;
-    --el-button-active-border-color: #23923d;
+    @media (prefers-color-scheme: dark) {
+      --el-button-bg-color: #252525;
+      --el-button-border-color: #4c4d4f;
+      --el-button-text-color: #bbc6ce;
+      --el-button-hover-bg-color: #252525;
+      --el-button-hover-border-color: #23923d;
+      --el-button-hover-text-color: #23923d;
+      --el-button-active-bg-color: #252525;
+      --el-button-active-border-color: #23923d;
+    }
     &:hover {
       border-color: #29a745 !important;
       color: #29a745 !important;

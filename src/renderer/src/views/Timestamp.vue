@@ -275,26 +275,44 @@ const clear = () => {
 <style lang="scss" scoped>
 // 表头
 :deep(.el-table__header-wrapper th) {
-  background-color: #333;
-  color: #bdc6cd;
+  background-color: #f7f7f7;
+  color: #535a6c;
   font-weight: bold;
   border: none !important;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #333;
+    color: #bdc6cd;
+  }
 }
 
 // 斑马条纹样式（需配合 stripe 属性）
 :deep(.el-table__row--striped td) {
-  background-color: #333 !important;
+  background-color: #f6f8f9 !important;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #333 !important;
+  }
 }
 
 // 表体
 :deep(.el-table__body tr > td) {
-  background-color: #282929;
-  color: #bdc6cd;
+  background-color: #ffffff;
+  color: #535a6c;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #282929;
+    color: #bdc6cd;
+  }
 }
 
 // 行 hover 效果
 :deep(.el-table__body tr:hover > td) {
-  background-color: #2a3531 !important;
+  background-color: #eaf5f1 !important;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #2a3531 !important;
+  }
 }
 
 :deep(.el-table) {
@@ -315,17 +333,34 @@ const clear = () => {
       cursor: pointer;
     }
   }
+
+  &:hover {
+    color: #29a745 !important;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 :deep(.el-button--primary) {
-  --el-button-bg-color: #252525;
-  --el-button-border-color: #4c4d4f;
-  --el-button-text-color: #bbc6ce;
-  --el-button-hover-bg-color: #252525;
+  --el-button-bg-color: #ffffff;
+  --el-button-text-color: #333;
+  --el-button-border-color: #dddfe5;
+  --el-button-hover-bg-color: #fff;
   --el-button-hover-border-color: #23923d;
   --el-button-hover-text-color: #23923d;
-  --el-button-active-bg-color: #252525;
+  --el-button-active-bg-color: #ffffff;
   --el-button-active-border-color: #23923d;
+
+  @media (prefers-color-scheme: dark) {
+    --el-button-bg-color: #252525;
+    --el-button-border-color: #4c4d4f;
+    --el-button-text-color: #bbc6ce;
+    --el-button-hover-bg-color: #252525;
+    --el-button-hover-border-color: #23923d;
+    --el-button-hover-text-color: #23923d;
+    --el-button-active-bg-color: #252525;
+    --el-button-active-border-color: #23923d;
+  }
 }
 
 :deep(.el-input) {

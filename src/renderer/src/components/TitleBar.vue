@@ -67,7 +67,7 @@ onMounted(() => {
     <div class="h-full flex items-center justify-center absolute top-0 right-0">
       <Pin
         v-if="showTop && onTop"
-        class="h-full w-[30px] cursor-pointer text-[#29a745] dark:bg-gray-800 dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        class="h-full w-[30px] cursor-pointer text-[#29a745] hover:bg-slate-200 dark:bg-gray-800 dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         title="取消置顶"
         theme="filled"
@@ -75,28 +75,28 @@ onMounted(() => {
       />
       <Pin
         v-if="showTop && !onTop"
-        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 hover:bg-slate-200 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         title="置顶"
         @click="top()"
       />
       <Minus
         v-if="showMin"
-        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 hover:bg-slate-200 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         title="最小化"
         @click="minimize()"
       />
       <Square
         v-if="showMax && !isMax"
-        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 hover:bg-slate-200 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         :title="isMax ? '还原' : '最大化'"
         @click="maximize()"
       />
       <Copy
         v-if="showMax && isMax"
-        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
+        class="h-full w-[30px] cursor-pointer dark:bg-gray-800 hover:bg-slate-200 dark:text-white dark:hover:bg-gray-600 bg-white flex items-center justify-center"
         style="-webkit-app-region: no-drag"
         :title="isMax ? '还原' : '最大化'"
         @click="maximize()"

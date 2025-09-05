@@ -34,7 +34,7 @@ watchEffect(() => {
       style="user-select: none"
     >
       <div
-        class="h-[32px] w-[32px] absolute top-0 left-2 flex items-center justify-center dark:text-[#bdc6cd] dark:hover:bg-[#2a3531] dark:hover:text-[#29a745] cursor-pointer"
+        class="h-[32px] w-[32px] absolute top-0 left-2 flex items-center justify-center hover:bg-[#eaf5f1] dark:text-[#bdc6cd] dark:hover:bg-[#2a3531] dark:hover:text-[#29a745] cursor-pointer"
         @click="
           () => {
             const to = route.query.from ? (route.query.from as string) : '/home/json'
@@ -62,7 +62,7 @@ watchEffect(() => {
           </el-form-item>
         </el-form>
         <div
-          class="flex items-center justify-center dark:text-[#515A6E] dark:opacity-15 bg-transparent absolute top-0 left-0 h-full w-full pointer-events-none"
+          class="flex items-center justify-center text-slate-100 dark:text-[#515A6E] dark:opacity-15 bg-transparent absolute top-0 left-0 h-full w-full pointer-events-none"
         >
           <setting theme="outline" size="240" :stroke-width="1" />
         </div>
