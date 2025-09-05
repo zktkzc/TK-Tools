@@ -28,6 +28,7 @@ defineProps({
 
 const isMax = ref(false)
 const onTop = ref(false)
+const platform = window.electron.process.platform
 
 const close = (): void => {
   window.api.winTitleOp(WinTitleAction.Close)
@@ -60,7 +61,10 @@ onMounted(() => {
 
 <template>
   <div
-    class="w-full h-[30px] leading-[30px] flex items-center justify-between relative bg-white dark:bg-gray-800 dark:text-white rounded-tl-xl rounded-tr-xl"
+    :class="[
+      'w-full h-full leading-[30px] flex items-center justify-between relative bg-white dark:bg-gray-800 dark:text-white',
+      platform !== 'win32' ? 'rounded-tl-xl rounded-tr-xl' : ''
+    ]"
     style="-webkit-app-region: drag"
   >
     <div class="h-full w-full text-center" style="user-select: none">{{ title }}</div>
@@ -103,7 +107,10 @@ onMounted(() => {
       />
       <Close
         v-if="showClose"
-        class="h-full w-[30px] cursor-pointer hover:bg-red-500 dark:bg-gray-800 dark:text-white dark:hover:bg-red-500 bg-white flex items-center justify-center rounded-tr-xl"
+        :class="[
+          'h-full w-[30px] cursor-pointer hover:bg-red-500 dark:bg-gray-800 dark:text-white dark:hover:bg-red-500 bg-white flex items-center justify-center',
+          platform !== 'win32' ? 'rounded-tr-xl' : ''
+        ]"
         style="-webkit-app-region: no-drag"
         title="关闭"
         @click="close()"

@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { computedAsync } from '@vueuse/core'
 import { onMounted } from 'vue'
 
+const platform = window.electron.process.platform
 const router = useRouter()
 const route = useRoute()
 const themeMode = computedAsync(async () => {
@@ -24,7 +25,10 @@ onMounted(() => {
 
 <template>
   <div
-    class="w-full h-[30px] text-sm leading-[30px] text-center border-t border-[#dcdfe6] dark:border-[#4c4d4f] bg-[#F7F7F7] text-[#515A6E] dark:bg-[#333] dark:text-[#BDC6CD] rounded-bl-xl rounded-br-xl relative"
+    :class="[
+      'w-full h-full text-sm leading-[30px] text-center border-t border-[#dcdfe6] dark:border-[#4c4d4f] bg-[#F7F7F7] text-[#515A6E] dark:bg-[#333] dark:text-[#BDC6CD] relative',
+      platform !== 'win32' ? 'rounded-bl-xl rounded-br-xl' : ''
+    ]"
     style="user-select: none"
   >
     tkzc00作品&nbsp;v{{ config.version }}

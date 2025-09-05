@@ -32,7 +32,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="h-[calc(100vh-61px)] w-full bg-white overflow-hidden dark:bg-[#252525]">
+  <main class="h-full w-full bg-white overflow-hidden dark:bg-[#252525]">
     <el-menu
       v-model="activeIndex"
       :default-active="activeIndex"
