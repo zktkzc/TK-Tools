@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const menuList = [
   {
@@ -16,7 +16,22 @@ const menuList = [
 ]
 const activeMenu = ref(0)
 const router = useRouter()
+const route = useRoute()
 const handleChange = (value: number): void => {
+  if (route.query?.to) {
+    const toPath = route.query.to as string
+    const menu = menuList.find((menu) => {
+      return toPath.includes(menu.path)
+    })
+    activeMenu.value = menu?.value || 0
+    if (toPath !== menu?.path) {
+      router.push({ path: route.query.to as string, query: { to: toPath } })
+      return
+    }
+    router.push(route.query.to as string)
+    return
+  }
+
   const item = menuList.find((item) => item.value === value)
   router.push(item!.path)
 }
@@ -27,15 +42,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-[calc(100vh-93px)] p-2 broder border-gray-500 flex flex-col justify-center">
-    <div class="">
+  <div class="w-full h-full p-2 pt-0 broder border-gray-500 flex flex-col justify-center">
+    <div class="w-full flex items-center justify-between flex-wrap">
       <el-radio-group v-model="activeMenu" @change="handleChange">
         <el-radio v-for="item in menuList" :key="item.value" :value="item.value">
           {{ item.label }}
         </el-radio>
       </el-radio-group>
     </div>
-    <div class="flex-1 border dark:border-[#4C4D4F] rounded-md">
+    <div class="flex-1 max-h-[calc(100vh-134px)] w-full border dark:border-[#4C4D4F] rounded-md">
       <router-view />
     </div>
   </div>

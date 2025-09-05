@@ -12,12 +12,16 @@ const menuItems = [
   { index: '3', label: '生成工具', path: '/home/gen' }
 ]
 const handleSelect = (key: string): void => {
-  if (route.query.to) {
+  if (route.query?.to) {
     const toPath = route.query.to as string
-    activeIndex.value =
-      menuItems.find((menu) => {
-        return toPath.startsWith(menu.path)
-      })?.index || '0'
+    const menu = menuItems.find((menu) => {
+      return toPath.includes(menu.path)
+    })
+    activeIndex.value = menu?.index || '0'
+    if (toPath !== menu?.path) {
+      router.push({ path: route.query.to as string, query: { to: toPath } })
+      return
+    }
     router.push(route.query.to as string)
     return
   }
@@ -32,25 +36,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="h-full w-full bg-white overflow-hidden dark:bg-[#252525]">
-    <el-menu
-      v-model="activeIndex"
-      :default-active="activeIndex"
-      class=""
-      style="user-select: none"
-      mode="horizontal"
-      @select="handleSelect"
-    >
-      <el-menu-item
-        v-for="item in menuItems"
-        :key="item.index"
-        :index="item.index"
-        class="cursor-pointer"
+  <main class="h-full w-full flex flex-col items-center bg-white dark:bg-[#252525]">
+    <div class="w-full">
+      <el-menu
+        v-model="activeIndex"
+        :default-active="activeIndex"
+        class=""
+        style="user-select: none"
+        mode="horizontal"
+        @select="handleSelect"
       >
-        {{ item.label }}
-      </el-menu-item>
-    </el-menu>
-    <router-view />
+        <el-menu-item
+          v-for="item in menuItems"
+          :key="item.index"
+          :index="item.index"
+          class="cursor-pointer"
+        >
+          {{ item.label }}
+        </el-menu-item>
+      </el-menu>
+    </div>
+    <div class="w-full flex-1">
+      <router-view />
+    </div>
   </main>
 </template>
 

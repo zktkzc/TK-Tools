@@ -48,7 +48,41 @@
     .el-popper__arrow::before {
       @media (prefers-color-scheme: dark) {
         background: #333 !important;
-          border: 1px solid #4c4d4f !important;
+        border: 1px solid #4c4d4f !important;
+      }
+    }
+  }
+
+  .custom-select.el-select__popper {
+    @media (prefers-color-scheme: dark) {
+      background-color: #4A4A4A !important;
+      border-color: #23333E !important;
+    }
+
+    .custom-select.el-select-dropdown {
+      @apply dark:bg-[#4A4A4A];
+
+      .el-select-dropdown__item {
+        @apply dark:text-[#BBC6CE] text-[#425462];
+
+        &.is-hovering {
+          @apply bg-[#EEEEEE] dark:bg-[#616161] text-[#425462] dark:text-[#BBC6CE];
+        }
+
+        &.is-selected {
+          @apply dark:bg-[#4A4A4A] text-[#29a745];
+
+          &.is-hovering {
+            @apply bg-[#EEEEEE] dark:bg-[#616161] text-[#29a745];
+          }
+        }
+      }
+    }
+
+    .el-popper__arrow::before {
+      @media (prefers-color-scheme: dark) {
+        background-color: #4A4A4A !important;
+        border-color: #23333E !important;
       }
     }
   }

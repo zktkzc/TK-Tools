@@ -223,7 +223,7 @@ const clear = () => {
 </script>
 
 <template>
-  <div class="h-full w-full p-2 flex flex-col space-y-2">
+  <div class="h-full w-full p-2 flex flex-col gap-2">
     <el-input
       v-model="inputValue"
       placeholder="支持 YYYY-MM-DD HH:mm:ss[.\d+] 与 时间戳(秒/毫秒/纳秒)输入"

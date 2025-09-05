@@ -50,9 +50,9 @@ const extensions = computed(() => {
     basic
     :dark="themeMode === 'dark'"
     :gutter="gutter"
-    class="h-full"
     :extensions="extensions"
     :placeholder="placeholder"
+    class="h-full w-full min-h-0 max-h-full"
   />
 </template>
 

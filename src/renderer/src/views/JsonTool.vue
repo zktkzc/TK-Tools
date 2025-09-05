@@ -111,47 +111,51 @@ const clear = (): void => {
 </script>
 
 <template>
-  <div class="m-2 h-[calc(100vh-102px)] flex flex-col justify-between gap-1 dark:bg-[#252525]">
-    <div class="h-[calc(100vh-40px)] grid grid-flow-row grid-cols-2 gap-2">
-      <div
-        class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
-      >
-        <Editor v-model:code="jsonStr" lang="json" placeholder="输入" />
-      </div>
-      <div
-        class="h-full border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-y-auto"
-      >
-        <Editor v-model:code="result" lang="json" placeholder="输出" />
+  <div class="p-2 pb-1 h-full w-full flex flex-col justify-between gap-1 dark:bg-[#252525]">
+    <div class="w-full flex-1 max-h-[calc(100vh-147px)]">
+      <div class="w-full h-full flex items-center gap-2">
+        <div
+          class="h-full w-1/2 border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-auto"
+        >
+          <Editor v-model:code="jsonStr" lang="json" placeholder="输入" />
+        </div>
+        <div
+          class="h-full w-1/2 border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-auto"
+        >
+          <Editor v-model:code="result" lang="json" placeholder="输出" />
+        </div>
       </div>
     </div>
-    <div class="h-full max-h-[40px] min-h-[40px] flex items-center gap-2">
-      <el-dropdown
-        trigger="click"
-        class="dropdown"
-        popper-class="custom-dropdown"
-        @command="handleCommand"
-      >
-        <el-button plain>
-          {{ activeDropItem.label }}
-          <down class="pl-1" />
-        </el-button>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item
-              v-for="item in dropDownItems"
-              :key="item.command"
-              :command="item.command"
-            >
-              {{ item.label }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-      <el-button type="primary" @click="beautify">格式化</el-button>
-      <el-button type="primary" @click="repair">JSON修复</el-button>
-      <el-button type="primary" @click="minimal">压缩</el-button>
-      <el-checkbox v-model="needTransfer" @change="transfer">转义</el-checkbox>
-      <el-button type="primary" @click="clear">清空输入</el-button>
+    <div class="w-full h-[40px]">
+      <div class="h-full w-full flex items-center gap-2">
+        <el-dropdown
+          trigger="click"
+          class="dropdown"
+          popper-class="custom-dropdown"
+          @command="handleCommand"
+        >
+          <el-button plain>
+            {{ activeDropItem.label }}
+            <down class="pl-1" />
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="item in dropDownItems"
+                :key="item.command"
+                :command="item.command"
+              >
+                {{ item.label }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-button type="primary" @click="beautify">格式化</el-button>
+        <el-button type="primary" @click="repair">JSON修复</el-button>
+        <el-button type="primary" @click="minimal">压缩</el-button>
+        <el-checkbox v-model="needTransfer" @change="transfer">转义</el-checkbox>
+        <el-button type="primary" @click="clear">清空输入</el-button>
+      </div>
     </div>
   </div>
 </template>

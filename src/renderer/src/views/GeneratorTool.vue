@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const menuList = [
   {
@@ -16,7 +16,22 @@ const menuList = [
 ]
 const activeMenu = ref(0)
 const router = useRouter()
+const route = useRoute()
 const handleChange = (value: number): void => {
+  if (route.query?.to) {
+    const toPath = route.query.to as string
+    const menu = menuList.find((menu) => {
+      return toPath.includes(menu.path)
+    })
+    activeMenu.value = menu?.value || 0
+    if (toPath !== menu?.path) {
+      router.push({ path: route.query.to as string, query: { to: toPath } })
+      return
+    }
+    router.push(route.query.to as string)
+    return
+  }
+
   const item = menuList.find((item) => item.value === value)
   router.push(item!.path)
 }

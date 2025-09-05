@@ -32,7 +32,7 @@ onMounted(() => {
     style="user-select: none"
   >
     tkzc00作品&nbsp;v{{ config.version }}
-    <div class="h-full absolute top-0 right-0 flex items-center justify-center gap-2 mx-2">
+    <div class="h-full absolute top-0 right-2 flex items-center justify-center gap-2 mx-2">
       <el-tooltip content="打开开发者工具" :effect="themeMode">
         <browser
           theme="outline"

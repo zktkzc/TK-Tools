@@ -2,7 +2,7 @@
 import { ArrowLeft, Setting } from '@icon-park/vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import { SettingsType } from '../../../types'
-import { ref, watchEffect } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import { useSettingsStore } from '@renderer/store/useSettingsStore'
 import { computedAsync } from '@vueuse/core'
 
@@ -23,11 +23,17 @@ watchEffect(() => {
   setSettings(settings.value)
   window.api.changeSettings(Object.assign({}, settings.value))
 })
+
+onMounted(() => {
+  window.api.onThemeChanged(async () => {
+    themeMode.value = await window.api.getThemeMode()
+  })
+})
 </script>
 
 <template>
   <div
-    class="h-[calc(100vh-61px)] w-full bg-white overflow-hidden dark:bg-[#252525] flex flex-col justify-center space-y-2 overflow-y-hidden"
+    class="h-full w-full bg-white overflow-hidden dark:bg-[#252525] flex flex-col justify-center space-y-2 overflow-y-hidden"
   >
     <div
       class="h-[32px] w-full dark:text-[#bdc6cd] dark:bg-[#333] px-2 flex items-center justify-center text-center relative"
@@ -48,13 +54,13 @@ watchEffect(() => {
       </div>
       软件设置
     </div>
-    <div class="w-full h-full p-2 overflow-y-auto" style="user-select: none">
+    <div class="w-full flex-1 px-2 pb-2 overflow-y-auto" style="user-select: none">
       <div
         class="w-full h-full dark:text-[#bdc6cd] border dark:border-[#4C4D4F] rounded-md p-2 overflow-y-auto relative"
       >
         <el-form :model="settings" label-width="100px">
-          <el-form-item label="主题" class="w-[200px]">
-            <el-select v-model="settings.theme" @change="changeTheme">
+          <el-form-item label="主题" class="w-[180px]">
+            <el-select v-model="settings.theme" popper-class="custom-select" @change="changeTheme">
               <el-option label="亮色" value="light" />
               <el-option label="暗色" value="dark" />
               <el-option label="自动" value="system" />
@@ -70,3 +76,17 @@ watchEffect(() => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+:deep(.el-select__wrapper) {
+  @apply dark:bg-[#252525] shadow-none hover:shadow-none border border-[#DCDFE6] dark:border-[#4C4D4F] hover:border-[#29a745];
+}
+
+:deep(.el-select__placeholder) {
+  @apply text-[#545C70] dark:text-[#bbc6ce] hover:text-[#29a745];
+}
+
+:deep(.el-form-item__label) {
+  @apply text-[#545C70] dark:text-[#bbc6ce];
+}
+</style>

@@ -59,6 +59,10 @@ const handleResult = (): void => {
 
 onMounted(() => {
   characters.value = charactersSettingDialogRef.value.setPreset(checkList.value)
+
+  window.api.onThemeChanged(async () => {
+    themeMode.value = await window.api.getThemeMode()
+  })
 })
 
 watch(
