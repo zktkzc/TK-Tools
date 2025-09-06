@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Close, Copy, Minus, Square, Pin } from '@icon-park/vue-next'
+import { Close, Copy, Minus, Pin, Square } from '@icon-park/vue-next'
 import { WinTitleAction } from '../../../types'
 
 defineProps({
@@ -67,7 +67,12 @@ onMounted(() => {
     ]"
     style="-webkit-app-region: drag"
   >
-    <div class="h-full w-full text-center" style="user-select: none">{{ title }}</div>
+    <div
+      class="h-full w-full text-center text-slate-700 dark:text-slate-300"
+      style="user-select: none"
+    >
+      {{ title }}
+    </div>
     <div class="h-full flex items-center justify-center absolute top-0 right-0">
       <Pin
         v-if="showTop && onTop"
