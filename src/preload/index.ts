@@ -19,6 +19,9 @@ const api = {
   calculateHash: (originValue: string) => {
     return ipcRenderer.invoke('calculateHash', originValue)
   },
+  calculateFileHash: (filePath: string) => {
+    return ipcRenderer.invoke('calculateFileHash', filePath)
+  },
   switchOnTop: (value: boolean) => {
     ipcRenderer.send('switchOnTop', value)
   },
@@ -37,6 +40,12 @@ const api = {
     ipcRenderer.on('clear', () => {
       callback()
     })
+  },
+  selectFile: () => {
+    return ipcRenderer.invoke('selectFile')
+  },
+  readFile: (filePath: string) => {
+    return ipcRenderer.invoke('readFile', filePath)
   }
 }
 

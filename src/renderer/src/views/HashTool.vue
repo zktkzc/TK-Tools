@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Down } from '@icon-park/vue-next'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { CheckOne, Down, UploadOne } from '@icon-park/vue-next'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { sm3 } from 'sm-crypto-v2'
 import { ElMessage } from 'element-plus'
 import { HashToolDataType } from '../../../types'
@@ -14,8 +14,23 @@ const sha256Value = ref<string>('')
 const sha512Value = ref<string>('')
 const sm3Value = ref<string>('')
 const { getData, setData } = useDataStore()
+
+const menuList = [
+  { command: 'text', label: '文本' },
+  { command: 'file', label: '文件' }
+]
+const activeMenu = computed(() => {
+  return menuList.find((menu) => menu.command === activeType.value)
+})
+
 const handleCommand = (type: string): void => {
   activeType.value = type
+  calculateSm3ForFile('')
+
+  if (type === 'text') {
+    file.value = ''
+    initData()
+  }
 }
 
 const handleInput = async (value: string): Promise<void> => {
@@ -44,6 +59,55 @@ const copy = (value: string): void => {
   if (value === '') return
   navigator.clipboard.writeText(value)
   ElMessage.success({ message: '复制成功', grouping: true, customClass: 'success' })
+}
+
+const calculateSm3ForFile = (filePath: string) => {
+  if (filePath === '') {
+    md5Value.value = ''
+    sha1Value.value = ''
+    sha256Value.value = ''
+    sha512Value.value = ''
+    sm3Value.value = ''
+    return
+  }
+
+  window.api
+    .readFile(filePath)
+    .then((data: any) => {
+      sm3Value.value = sm3(data)
+    })
+    .catch((err) => {
+      ElMessage.error({
+        message: `读取文件失败: ${err.message}`,
+        grouping: true,
+        customClass: 'error'
+      })
+    })
+}
+
+const file = ref('')
+const selectFile = async () => {
+  const { canceled, filePaths } = await window.api.selectFile()
+  if (canceled) return
+  window.api
+    .calculateFileHash(filePaths[0])
+    .then((data: any) => {
+      const { md5, sha1, sha256, sha512 } = data
+      md5Value.value = md5
+      sha1Value.value = sha1
+      sha256Value.value = sha256
+      sha512Value.value = sha512
+      calculateSm3ForFile(filePaths[0])
+
+      file.value = filePaths[0].substring(filePaths[0].lastIndexOf('/') + 1)
+    })
+    .catch((error: Error) => {
+      ElMessage.error({
+        message: `计算失败: ${error.message}`,
+        customClass: 'error',
+        grouping: true
+      })
+    })
 }
 
 const initData = () => {
@@ -80,8 +144,8 @@ onUnmounted(() => {
   <div
     class="w-[calc(100wh-10px)] h-[calc(100vh-105px)] m-2 grid grid-rows-5 grid-cols-2 gap-2 dark:bg-[#252525]"
   >
-    <div class="h-full col-1 row-span-full">
-      <div v-if="activeType === 'text'" class="h-full relative">
+    <div class="h-full col-1 row-span-full relative">
+      <div v-if="activeType === 'text'" class="h-full">
         <el-input
           v-model="originValue"
           type="textarea"
@@ -90,23 +154,45 @@ onUnmounted(() => {
           class="h-full"
           @input="handleInput"
         />
-        <div class="flex flex-wrap items-center absolute top-1 right-1 dropdown">
-          <el-dropdown trigger="click" popper-class="custom-dropdown" @command="handleCommand">
-            <el-button plain size="small">
-              文本
-              <down class="pl-1" />
-            </el-button>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="text">文本</el-dropdown-item>
-                <el-dropdown-item command="file">文件</el-dropdown-item>
-              </el-dropdown-menu>
+      </div>
+      <div
+        v-else
+        class="h-full w-full border dark:border-[#4C4D4F] border-[#DCDFE6] hover:border-[#29a745] rounded-md"
+      >
+        <div class="h-full w-full flex flex-col items-center justify-center">
+          <el-button class="upload-btn" @click="selectFile">
+            <template #icon>
+              <upload-one />
             </template>
-          </el-dropdown>
+            上传文件
+          </el-button>
+          <div
+            v-if="file && file !== ''"
+            class="flex items-center gap-1 text-xs mt-2 text-[#A8ABB2] dark:text-[#8C9095]"
+          >
+            <check-one theme="filled" />
+            {{ file }}
+          </div>
         </div>
       </div>
-      <div v-else>
-        <div>文件</div>
+      <div class="flex flex-wrap items-center absolute top-1 right-1 dropdown">
+        <el-dropdown trigger="click" popper-class="custom-dropdown" @command="handleCommand">
+          <el-button plain size="small">
+            {{ activeMenu?.label }}
+            <down class="pl-1" />
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="menu in menuList"
+                :key="menu.command"
+                :command="menu.command"
+              >
+                {{ menu.label }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
     <div class="h-full col-2 row-1 relative">
@@ -261,6 +347,17 @@ onUnmounted(() => {
       border-color: #29a745 !important;
       color: #29a745 !important;
     }
+  }
+}
+
+:deep(.el-button) {
+  &.upload-btn {
+    --el-button-text-color: #fff;
+    --el-button-bg-color: #29a745;
+    --el-button-border-color: #29a745;
+    --el-button-hover-text-color: #fff;
+    --el-button-hover-bg-color: #23923d;
+    --el-button-hover-border-color: #23923d;
   }
 }
 </style>

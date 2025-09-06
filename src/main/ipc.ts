@@ -1,6 +1,7 @@
 import {
   app,
   BrowserWindow,
+  dialog,
   ipcMain,
   IpcMainEvent,
   IpcMainInvokeEvent,
@@ -9,6 +10,7 @@ import {
 import { SettingsType, WinTitleAction } from '../types'
 import * as crypto from 'node:crypto'
 import { getData, setData } from './store'
+import * as fs from 'node:fs'
 
 ipcMain.on('winTitleOp', (e: IpcMainEvent, action: WinTitleAction) => {
   const webContents = e.sender
@@ -54,6 +56,38 @@ ipcMain.handle('calculateHash', (_event: IpcMainInvokeEvent, originValue: string
   return { md5, sha1, sha256, sha512 }
 })
 
+ipcMain.handle('calculateFileHash', (_event: IpcMainInvokeEvent, filePath: string) => {
+  return new Promise((resolve, reject) => {
+    const inputStream = fs.createReadStream(filePath)
+
+    const md5_hash = crypto.createHash('md5')
+    const sha1_hash = crypto.createHash('sha1')
+    const sha256_hash = crypto.createHash('sha256')
+    const sha512_hash = crypto.createHash('sha512')
+
+    inputStream.on('data', (chunk) => {
+      md5_hash.update(chunk)
+      sha1_hash.update(chunk)
+      sha256_hash.update(chunk)
+      sha512_hash.update(chunk)
+    })
+
+    // 当流读取结束时，计算最终的哈希值
+    inputStream.on('end', () => {
+      const md5 = md5_hash.digest('hex')
+      const sha1 = sha1_hash.digest('hex')
+      const sha256 = sha256_hash.digest('hex')
+      const sha512 = sha512_hash.digest('hex')
+      resolve({ md5, sha1, sha256, sha512 })
+    })
+
+    // 如果流读取过程中发生错误，拒绝 Promise
+    inputStream.on('error', (err) => {
+      reject(err)
+    })
+  })
+})
+
 ipcMain.on('switchOnTop', (event: IpcMainEvent, value: boolean) => {
   const win: BrowserWindow | null = BrowserWindow.fromWebContents(event.sender)
   if (!win) return
@@ -76,4 +110,22 @@ ipcMain.on('changeThemeMode', (event: IpcMainEvent, value: string) => {
 
 ipcMain.on('clear', (event: IpcMainEvent) => {
   BrowserWindow.fromWebContents(event.sender)?.webContents.send('clear')
+})
+
+ipcMain.handle('selectFile', async () => {
+  return await dialog.showOpenDialog({
+    title: '选择文件',
+    properties: ['openFile']
+  })
+})
+
+ipcMain.handle('readFile', async (_event: IpcMainInvokeEvent, filePath: string) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const fileBuffer = fs.readFileSync(filePath)
+      resolve(fileBuffer)
+    } catch (error) {
+      reject(error)
+    }
+  })
 })
