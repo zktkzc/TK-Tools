@@ -24,11 +24,14 @@ const date1_1 = ref(getStandardTimeSeconds(initDate))
 const date1_2 = ref(getStandardTimeSeconds(new Date(initDate.getTime() + 24 * 60 * 60 * 1000)))
 const result1 = ref<number>()
 const unit1 = ref<string>('second')
-const date2_1 = ref<string>(getStandardTimeSeconds(initDate))
+const date2 = ref<string>(getStandardTimeSeconds(initDate))
 const sign = ref<string>('+')
 const diffValue = ref<number>(1)
 const unit2 = ref<string>('day')
 const result2 = ref<string>()
+const date3 = ref(getStandardTimeSeconds(initDate))
+const unit3 = ref<string>('year')
+const result3 = ref<string>()
 
 const diffBetween = () => {
   const startDate = dayjs(date1_1.value)
@@ -39,8 +42,8 @@ const diffBetween = () => {
 diffBetween()
 
 const calculate = () => {
-  const start = dayjs(date2_1.value)
-  let end = dayjs(date2_1.value)
+  const start = dayjs(date2.value)
+  let end = dayjs(date2.value)
   if (sign.value === '+') {
     end = start.add(diffValue.value, unit2.value as any)
   } else {
@@ -56,6 +59,82 @@ const copy = (value: string | undefined) => {
   navigator.clipboard.writeText(value)
   ElMessage.success({ message: '复制成功', grouping: true, customClass: 'success' })
 }
+
+const getquarter = () => {
+  const month = dayjs(date3.value).month()
+  let quarterInfo = { quarter: 1, quarterStartMonth: 0 }
+  if (month <= 2) {
+    // 第一季度: 0,1,2月
+    quarterInfo = { quarter: 1, quarterStartMonth: 0 }
+  } else if (month <= 5) {
+    // 第二季度: 3,4,5月
+    quarterInfo = { quarter: 2, quarterStartMonth: 3 }
+  } else if (month <= 8) {
+    // 第三季度: 6,7,8月
+    quarterInfo = { quarter: 3, quarterStartMonth: 6 }
+  } else {
+    // 第四季度: 9,10,11月
+    quarterInfo = { quarter: 4, quarterStartMonth: 9 }
+  }
+  return quarterInfo
+}
+
+const analyzeDiffBetweenTowDate = (start: dayjs.Dayjs, target: dayjs.Dayjs) => {
+  const totalSeconds = target.diff(start, 'second')
+  const totalMinutes = Math.ceil(totalSeconds / 60)
+  const totalHours = Math.ceil(totalMinutes / 60)
+  const totalDays = Math.ceil(totalHours / 24)
+  const totalWeeks = Math.ceil(totalDays / 7)
+  return {
+    totalSeconds,
+    totalMinutes,
+    totalHours,
+    totalDays,
+    totalWeeks
+  }
+}
+
+const analyzeForYear = () => {
+  const target = dayjs(date3.value)
+  const year = target.year()
+  const start = dayjs(new Date(year, 0, 1))
+  const { quarter } = getquarter()
+  const { totalSeconds, totalMinutes, totalHours, totalDays, totalWeeks } =
+    analyzeDiffBetweenTowDate(start, target)
+  result3.value = `${year}年: ${quarter}季度, ${totalWeeks}周, ${totalDays}天, ${totalHours}小时, ${totalMinutes}分钟, ${totalSeconds}秒`
+}
+
+const analyzeForQuarter = () => {
+  const target = dayjs(date3.value)
+  const { quarter, quarterStartMonth } = getquarter()
+  const start = dayjs(new Date(target.year(), quarterStartMonth, 1))
+  const { totalSeconds, totalMinutes, totalHours, totalDays, totalWeeks } =
+    analyzeDiffBetweenTowDate(start, target)
+  result3.value = `${quarter}季度: ${totalWeeks}周, ${totalDays}天, ${totalHours}小时, ${totalMinutes}分钟, ${totalSeconds}秒`
+}
+
+const analyzeForMonth = () => {
+  const target = dayjs(date3.value)
+  const start = dayjs(new Date(target.year(), target.month(), 1))
+  const { totalSeconds, totalMinutes, totalHours, totalDays, totalWeeks } =
+    analyzeDiffBetweenTowDate(start, target)
+  result3.value = `${target.month() + 1}月: ${totalWeeks}周, ${totalDays}天, ${totalHours}小时, ${totalMinutes}分钟, ${totalSeconds}秒`
+}
+
+const analyzeDate = () => {
+  switch (unit3.value) {
+    case 'year':
+      analyzeForYear()
+      break
+    case 'quarter':
+      analyzeForQuarter()
+      break
+    case 'month':
+      analyzeForMonth()
+      break
+  }
+}
+analyzeDate()
 </script>
 
 <template>
@@ -93,7 +172,7 @@ const copy = (value: string | undefined) => {
     </Card>
     <Card title="时间操作" class="dark:text-[#AEB9C0]">
       <div class="flex items-center gap-2 flex-wrap">
-        <el-input v-model="date2_1" style="width: 200px" @input="calculate" />
+        <el-input v-model="date2" style="width: 200px" @input="calculate" />
         <el-select
           v-model="sign"
           style="width: 60px"
@@ -130,9 +209,31 @@ const copy = (value: string | undefined) => {
         <el-input
           v-model="result2"
           readonly
-          style="width: 200px"
+          style="width: 170px"
           class="result-input"
           @click="copy(result2?.toString())"
+        />
+      </div>
+    </Card>
+    <Card title="时间分析" class="dark:text-[#AEB9C0]">
+      <div class="flex items-center gap-2 flex-wrap">
+        <el-input v-model="date3" style="width: 200px" @input="analyzeDate" />
+        <el-select
+          v-model="unit3"
+          style="width: 80px"
+          popper-class="custom-select"
+          @change="analyzeDate"
+        >
+          <el-option label="年" value="year" />
+          <el-option label="季度" value="quarter" />
+          <el-option label="月" value="month" />
+        </el-select>
+        <el-input
+          v-model="result3"
+          readonly
+          style="width: 440px"
+          class="result-input"
+          @click="copy(result3?.toString())"
         />
       </div>
     </Card>
