@@ -7,6 +7,10 @@
     @apply w-2;
   }
 
+  ::-webkit-scrollbar:horizontal {
+    @apply h-2;
+  }
+
   ::-webkit-scrollbar-thumb {
     @apply bg-[rgba(24,188,156,.2)] hover:bg-[rgba(24,188,156,.5)] rounded-md;
   }

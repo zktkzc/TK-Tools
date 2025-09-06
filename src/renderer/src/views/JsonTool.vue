@@ -11,6 +11,7 @@ import estree from 'prettier/plugins/estree'
 const jsonStr = ref()
 const result = ref()
 const needTransfer = ref(false)
+const needWrap = ref(true)
 
 const copy = () => {
   navigator.clipboard.writeText(result.value)
@@ -92,6 +93,10 @@ const transfer = (): void => {
   }
 }
 
+const autoWrap = () => {
+  beautify()
+}
+
 const dropDownItems = [
   { command: '0', label: '无缩进' },
   { command: '2', label: '缩进空格 2' },
@@ -123,12 +128,12 @@ onUnmounted(() => {
         <div
           class="h-full w-1/2 border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-auto"
         >
-          <Editor v-model:code="jsonStr" lang="json" placeholder="输入" />
+          <Editor v-model:code="jsonStr" lang="json" placeholder="输入" :line-wrap="needWrap" />
         </div>
         <div
           class="h-full w-1/2 border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-auto"
         >
-          <Editor v-model:code="result" lang="json" placeholder="输出" />
+          <Editor v-model:code="result" lang="json" placeholder="输出" :line-wrap="needWrap" />
         </div>
       </div>
     </div>
@@ -160,6 +165,7 @@ onUnmounted(() => {
         <el-button type="primary" @click="repair">JSON修复</el-button>
         <el-button type="primary" @click="minimal">压缩</el-button>
         <el-checkbox v-model="needTransfer" @change="transfer">转义</el-checkbox>
+        <el-checkbox v-model="needWrap" @change="autoWrap">自动换行</el-checkbox>
       </div>
     </div>
   </div>

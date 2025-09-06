@@ -12,7 +12,7 @@ const code = defineModel('code', {
   default: ''
 })
 
-defineProps({
+const props = defineProps({
   lang: {
     type: String as PropType<LangType>,
     default: 'json'
@@ -24,6 +24,10 @@ defineProps({
   placeholder: {
     type: String,
     default: ''
+  },
+  lineWrap: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -38,7 +42,9 @@ const themeMode = computedAsync(async () => {
 })
 
 const extensions = computed(() => {
-  return [themeMode.value === 'dark' ? oneDark : []].concat([EditorView.lineWrapping])
+  return [themeMode.value === 'dark' ? oneDark : []].concat([
+    props.lineWrap ? EditorView.lineWrapping : []
+  ])
 })
 </script>
 
