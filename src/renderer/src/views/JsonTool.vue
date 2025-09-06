@@ -7,11 +7,14 @@ import { Down } from '@icon-park/vue-next'
 import { format } from 'prettier/standalone'
 import babel from 'prettier/plugins/babel'
 import estree from 'prettier/plugins/estree'
+import { useDataStore } from '@renderer/store/useDataStore'
+import { JsonToolDataType } from '../../../types'
 
 const jsonStr = ref()
 const result = ref()
 const needTransfer = ref(false)
 const needWrap = ref(true)
+const { setData, getData } = useDataStore()
 
 const copy = () => {
   navigator.clipboard.writeText(result.value)
@@ -45,7 +48,9 @@ const beautify = (): void => {
       } else {
         result.value = ''
       }
+      saveData()
     })
+  saveData()
 }
 
 const repair = (): void => {
@@ -82,7 +87,9 @@ const minimal = (): void => {
       } else {
         result.value = ''
       }
+      saveData()
     })
+  saveData()
 }
 
 const transfer = (): void => {
@@ -91,10 +98,12 @@ const transfer = (): void => {
   } else {
     result.value = result.value.replaceAll('\\"', '"')
   }
+  saveData()
 }
 
 const autoWrap = () => {
   beautify()
+  saveData()
 }
 
 const dropDownItems = [
@@ -107,17 +116,44 @@ const dropDownItems = [
 const activeDropItem = ref<{ command: string; label: string }>(dropDownItems[2])
 const handleCommand = (command: string): void => {
   activeDropItem.value = dropDownItems.find((item) => item.command === command)!
+  saveData()
 }
 
-onMounted(() => {
+const initData = async () => {
+  const data = (await getData('json_tool')) as JsonToolDataType
+  jsonStr.value = data.data?.jsonStr
+  result.value = data.data?.result
+  needTransfer.value = data.data?.needTransfer
+  needWrap.value = data.data?.needWrap
+  activeDropItem.value = data.data?.activeDropItem as { command: string; label: string }
+}
+
+const saveData = () => {
+  setData('json_tool', {
+    time: new Date().getTime(),
+    data: {
+      jsonStr: jsonStr.value,
+      result: result.value,
+      needTransfer: needTransfer.value,
+      needWrap: needWrap.value,
+      activeDropItem: activeDropItem.value
+    }
+  } as JsonToolDataType)
+}
+
+onMounted(async () => {
+  await initData()
+
   window.api.onClear(() => {
     jsonStr.value = ''
     result.value = ''
+    saveData()
   })
 })
 
 onUnmounted(() => {
   window.electron.ipcRenderer.removeAllListeners('clear')
+  saveData()
 })
 </script>
 

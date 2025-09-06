@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { Refresh } from '@icon-park/vue-next'
 import { v4 } from 'uuid'
+import { GenerateUUIDDataType } from '../../../types'
+import { useDataStore } from '@renderer/store/useDataStore'
 
 let records: string[] = []
 const result = ref<string>('')
@@ -11,6 +13,7 @@ const needQuotes = ref<boolean>(false)
 const needHyphen = ref<boolean>(true)
 const needUpperCase = ref<boolean>(false)
 const needToUint8 = ref<boolean>(false)
+const { getData, setData } = useDataStore()
 
 const generate = (): void => {
   records = []
@@ -24,6 +27,8 @@ const generate = (): void => {
   handleHyphenChange()
 
   handleToUint8Change()
+
+  storeData()
 }
 
 const handleResult = (): void => {
@@ -86,26 +91,56 @@ const handleUpperCaseChange = (): void => {
   else result.value = result.value.toLowerCase()
 }
 
-watch(
-  () => split.value,
-  (newValue, oldValue): void => {
-    if (newValue && oldValue && newValue !== oldValue) {
-      result.value = result.value.replaceAll(
-        oldValue.replaceAll('\\n', '\n'),
-        newValue.replaceAll('\\n', '\n')
-      )
+const handleSplitInput = (newValue: string): void => {
+  const oldValue = (getData('gen_uuid') as GenerateUUIDDataType).data.split
+  if (newValue && oldValue && newValue !== oldValue) {
+    result.value = result.value.replaceAll(
+      oldValue.replaceAll('\\n', '\n'),
+      newValue.replaceAll('\\n', '\n')
+    )
+    storeData()
+  }
+}
+
+const initData = () => {
+  const data = getData('gen_uuid') as GenerateUUIDDataType
+  result.value = data.data?.result
+  count.value = data.data?.count || 1
+  split.value = data.data?.split || ',\\n'
+  needQuotes.value = data.data?.needQuotes || false
+  needHyphen.value = data.data?.needHyphen || true
+  needUpperCase.value = data.data?.needUpperCase || false
+  needToUint8.value = data.data?.needToUint8 || false
+  records = data.data?.records || []
+}
+
+const storeData = () => {
+  setData('gen_uuid', {
+    time: new Date().getTime(),
+    data: {
+      result: result.value,
+      count: count.value,
+      split: split.value,
+      needQuotes: needQuotes.value,
+      needHyphen: needHyphen.value,
+      needUpperCase: needUpperCase.value,
+      needToUint8: needToUint8.value,
+      records: records
     }
-  },
-  { immediate: true, deep: true }
-)
+  } as GenerateUUIDDataType)
+}
 
 onMounted(() => {
+  initData()
+
   window.api.onClear(() => {
     result.value = ''
+    storeData()
   })
 })
 
 onUnmounted(() => {
+  storeData()
   window.electron.ipcRenderer.removeAllListeners('clear')
 })
 </script>
@@ -130,7 +165,7 @@ onUnmounted(() => {
             size="small"
             @change="handleResult"
           />
-          <el-input v-model="split" class="split-input">
+          <el-input v-model="split" class="split-input" @input="handleSplitInput">
             <template #prepend>分隔符</template>
           </el-input>
         </div>

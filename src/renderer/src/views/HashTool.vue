@@ -3,6 +3,8 @@ import { Down } from '@icon-park/vue-next'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { sm3 } from 'sm-crypto-v2'
 import { ElMessage } from 'element-plus'
+import { HashToolDataType } from '../../../types'
+import { useDataStore } from '@renderer/store/useDataStore'
 
 const activeType = ref<string>('text')
 const originValue = ref<string>('')
@@ -11,6 +13,7 @@ const sha1Value = ref<string>('')
 const sha256Value = ref<string>('')
 const sha512Value = ref<string>('')
 const sm3Value = ref<string>('')
+const { getData, setData } = useDataStore()
 const handleCommand = (type: string): void => {
   activeType.value = type
 }
@@ -30,6 +33,11 @@ const handleInput = async (value: string): Promise<void> => {
   sha256Value.value = sha256
   sha512Value.value = sha512
   sm3Value.value = sm3(value)
+
+  setData('hash_tool', {
+    time: new Date().getTime(),
+    data: { originValue: value }
+  } as HashToolDataType)
 }
 
 const copy = (value: string): void => {
@@ -38,14 +46,32 @@ const copy = (value: string): void => {
   ElMessage.success({ message: '复制成功', grouping: true, customClass: 'success' })
 }
 
+const initData = () => {
+  const data = getData('hash_tool') as HashToolDataType
+  originValue.value = data.data?.originValue
+  handleInput(originValue.value)
+}
+
 onMounted(() => {
+  initData()
+
   window.api.onClear(() => {
     originValue.value = ''
     handleInput('')
+
+    setData('hash_tool', {
+      time: new Date().getTime(),
+      data: { originValue: originValue.value }
+    } as HashToolDataType)
   })
 })
 
 onUnmounted(() => {
+  setData('hash_tool', {
+    time: new Date().getTime(),
+    data: { originValue: originValue.value }
+  } as HashToolDataType)
+
   window.electron.ipcRenderer.removeAllListeners('clear')
 })
 </script>

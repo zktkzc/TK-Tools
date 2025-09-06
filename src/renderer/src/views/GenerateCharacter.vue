@@ -3,7 +3,10 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { Refresh, Setting } from '@icon-park/vue-next'
 import CharactersSettingDialog from '@renderer/components/CharactersSettingDialog.vue'
 import { computedAsync } from '@vueuse/core'
+import { useDataStore } from '@renderer/store/useDataStore'
+import { GenerateCharacterDataType } from '../../../types'
 
+const { getData, setData } = useDataStore()
 let records: string[] = []
 const result = ref<string>('')
 const length = ref<number>(32)
@@ -21,6 +24,7 @@ const handleSubmit = (value: string, checkValue: string[]): void => {
   characters.value = value
   checkList.value = checkValue
   showDialog.value = false
+  storeData()
   if (result.value !== '') generate()
 }
 
@@ -48,6 +52,8 @@ const generate = (): void => {
   }
 
   handleResult()
+
+  storeData()
 }
 
 const handleResult = (): void => {
@@ -57,7 +63,36 @@ const handleResult = (): void => {
   else result.value = records.join(splitStr).replaceAll('"', '')
 }
 
+const initData = () => {
+  const data = getData('gen_ch') as GenerateCharacterDataType
+  result.value = data.data?.result
+  length.value = data.data?.length || 32
+  count.value = data.data?.count || 1
+  characters.value = data.data?.characters
+  split.value = data.data?.split || ',\\n'
+  needQuotes.value = data.data?.needQuotes || false
+  checkList.value = data.data?.checkList || ['number', 'slow', 'up']
+  records = data.data?.records || []
+}
+
+const storeData = () => {
+  setData('gen_ch', {
+    time: new Date().getTime(),
+    data: {
+      result: result.value,
+      length: length.value,
+      count: count.value,
+      characters: characters.value,
+      split: split.value,
+      needQuotes: needQuotes.value,
+      checkList: checkList.value,
+      records: records
+    }
+  } as GenerateCharacterDataType)
+}
+
 onMounted(() => {
+  initData()
   characters.value = charactersSettingDialogRef.value.setPreset(checkList.value)
 
   window.api.onThemeChanged(async () => {
@@ -66,10 +101,12 @@ onMounted(() => {
 
   window.api.onClear(() => {
     result.value = ''
+    storeData()
   })
 })
 
 onUnmounted(() => {
+  storeData()
   window.electron.ipcRenderer.removeAllListeners('clear')
 })
 

@@ -4,8 +4,7 @@ import { SettingsType } from '../../../types'
 export const useSettingsStore = defineStore('settings', {
   state: () => {
     return {
-      settings: null as SettingsType | null,
-      defaultSettings: {
+      settings: {
         theme: 'system'
       } as SettingsType
     }
@@ -14,13 +13,12 @@ export const useSettingsStore = defineStore('settings', {
     setSettings(value: SettingsType): void {
       this.settings = value
     },
-    getSettings(): SettingsType | null {
+    getSettings(): SettingsType {
       return this.settings
     }
   },
   persist: {
     key: 'settings',
-    storage: localStorage,
-    pick: ['settings']
+    storage: localStorage
   }
 })

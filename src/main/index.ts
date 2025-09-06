@@ -29,7 +29,7 @@ function createWindow(): void {
 
     const settings = getData('settings')
     if (settings) {
-      nativeTheme.themeSource = settings.theme
+      nativeTheme.themeSource = settings?.theme || 'system'
       BrowserWindow.getAllWindows().forEach((win) => {
         win.webContents.send('themeChanged')
       })

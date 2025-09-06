@@ -2,32 +2,43 @@
 import { ArrowLeft, Setting } from '@icon-park/vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import { SettingsType } from '../../../types'
-import { onMounted, ref, watchEffect } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useSettingsStore } from '@renderer/store/useSettingsStore'
 import { computedAsync } from '@vueuse/core'
 
-const { setSettings, getSettings, defaultSettings } = useSettingsStore()
+const { setSettings, getSettings } = useSettingsStore()
 const router = useRouter()
 const route = useRoute()
-const settings = ref<SettingsType>(getSettings() || defaultSettings)
+const settings = ref<SettingsType>({} as SettingsType)
 const themeMode = computedAsync(async () => {
   return await window.api.getThemeMode()
 })
 
 const changeTheme = (value: 'dark' | 'light' | 'system') => {
   window.api.changeThemeMode(value)
-  settings.value.theme = value
+  settings.value!.theme = value
+  storeSettings()
 }
 
-watchEffect(() => {
+const initSettings = () => {
+  settings.value = getSettings()
+}
+
+const storeSettings = () => {
   setSettings(settings.value)
   window.api.changeSettings(Object.assign({}, settings.value))
-})
+}
 
 onMounted(() => {
+  initSettings()
+
   window.api.onThemeChanged(async () => {
     themeMode.value = await window.api.getThemeMode()
   })
+})
+
+onUnmounted(() => {
+  storeSettings()
 })
 </script>
 
@@ -60,7 +71,7 @@ onMounted(() => {
       >
         <el-form :model="settings" label-width="100px">
           <el-form-item label="主题" class="w-[180px]">
-            <el-select v-model="settings.theme" popper-class="custom-select" @change="changeTheme">
+            <el-select v-model="settings!.theme" popper-class="custom-select" @change="changeTheme">
               <el-option label="亮色" value="light" />
               <el-option label="暗色" value="dark" />
               <el-option label="自动" value="system" />
