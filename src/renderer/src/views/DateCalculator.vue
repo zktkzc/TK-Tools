@@ -43,7 +43,7 @@ diffBetween()
 
 const calculate = () => {
   const start = dayjs(date2.value)
-  let end = dayjs(date2.value)
+  let end: dayjs.Dayjs
   if (sign.value === '+') {
     end = start.add(diffValue.value, unit2.value as any)
   } else {
@@ -60,9 +60,9 @@ const copy = (value: string | undefined) => {
   ElMessage.success({ message: '复制成功', grouping: true, customClass: 'success' })
 }
 
-const getquarter = () => {
+const getQuarter = () => {
   const month = dayjs(date3.value).month()
-  let quarterInfo = { quarter: 1, quarterStartMonth: 0 }
+  let quarterInfo: { quarter: number; quarterStartMonth: number }
   if (month <= 2) {
     // 第一季度: 0,1,2月
     quarterInfo = { quarter: 1, quarterStartMonth: 0 }
@@ -98,7 +98,7 @@ const analyzeForYear = () => {
   const target = dayjs(date3.value)
   const year = target.year()
   const start = dayjs(new Date(year, 0, 1))
-  const { quarter } = getquarter()
+  const { quarter } = getQuarter()
   const { totalSeconds, totalMinutes, totalHours, totalDays, totalWeeks } =
     analyzeDiffBetweenTowDate(start, target)
   result3.value = `${year}年: ${quarter}季度, ${totalWeeks}周, ${totalDays}天, ${totalHours}小时, ${totalMinutes}分钟, ${totalSeconds}秒`
@@ -106,7 +106,7 @@ const analyzeForYear = () => {
 
 const analyzeForQuarter = () => {
   const target = dayjs(date3.value)
-  const { quarter, quarterStartMonth } = getquarter()
+  const { quarter, quarterStartMonth } = getQuarter()
   const start = dayjs(new Date(target.year(), quarterStartMonth, 1))
   const { totalSeconds, totalMinutes, totalHours, totalDays, totalWeeks } =
     analyzeDiffBetweenTowDate(start, target)
