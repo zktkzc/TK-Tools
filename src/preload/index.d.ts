@@ -15,6 +15,7 @@ declare global {
       changeSettings: (settings: SettingsType) => void
       getSettings: () => Promise<SettingsType>
       onThemeChanged: (callback: () => void) => any
+      onClear: (callback: () => void) => any
     }
   }
 }

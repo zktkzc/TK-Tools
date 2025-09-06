@@ -220,6 +220,16 @@ watch(
 const clear = () => {
   inputValue.value = ''
 }
+
+onMounted(() => {
+  window.api.onClear(() => {
+    clear()
+  })
+})
+
+onUnmounted(() => {
+  window.electron.ipcRenderer.removeAllListeners('clear')
+})
 </script>
 
 <template>

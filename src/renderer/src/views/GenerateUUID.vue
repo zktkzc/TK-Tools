@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { Refresh } from '@icon-park/vue-next'
 import { v4 } from 'uuid'
 
@@ -98,6 +98,16 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
+onMounted(() => {
+  window.api.onClear(() => {
+    result.value = ''
+  })
+})
+
+onUnmounted(() => {
+  window.electron.ipcRenderer.removeAllListeners('clear')
+})
 </script>
 
 <template>

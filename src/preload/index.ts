@@ -32,6 +32,11 @@ const api = {
     ipcRenderer.on('themeChanged', () => {
       callback()
     })
+  },
+  onClear: (callback: () => void) => {
+    ipcRenderer.on('clear', () => {
+      callback()
+    })
   }
 }
 

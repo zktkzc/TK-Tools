@@ -73,3 +73,7 @@ ipcMain.on('changeThemeMode', (event: IpcMainEvent, value: string) => {
   nativeTheme.themeSource = value as 'dark' | 'light' | 'system'
   BrowserWindow.fromWebContents(event.sender)?.webContents.send('themeChanged')
 })
+
+ipcMain.on('clear', (event: IpcMainEvent) => {
+  BrowserWindow.fromWebContents(event.sender)?.webContents.send('clear')
+})

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { Refresh, Setting } from '@icon-park/vue-next'
 import CharactersSettingDialog from '@renderer/components/CharactersSettingDialog.vue'
 import { computedAsync } from '@vueuse/core'
@@ -63,6 +63,14 @@ onMounted(() => {
   window.api.onThemeChanged(async () => {
     themeMode.value = await window.api.getThemeMode()
   })
+
+  window.api.onClear(() => {
+    result.value = ''
+  })
+})
+
+onUnmounted(() => {
+  window.electron.ipcRenderer.removeAllListeners('clear')
 })
 
 watch(

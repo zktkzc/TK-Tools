@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { jsonrepair } from 'jsonrepair'
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import Editor from '@renderer/components/Editor.vue'
 import { Down } from '@icon-park/vue-next'
@@ -104,10 +104,16 @@ const handleCommand = (command: string): void => {
   activeDropItem.value = dropDownItems.find((item) => item.command === command)!
 }
 
-const clear = (): void => {
-  jsonStr.value = ''
-  result.value = ''
-}
+onMounted(() => {
+  window.api.onClear(() => {
+    jsonStr.value = ''
+    result.value = ''
+  })
+})
+
+onUnmounted(() => {
+  window.electron.ipcRenderer.removeAllListeners('clear')
+})
 </script>
 
 <template>
@@ -154,7 +160,6 @@ const clear = (): void => {
         <el-button type="primary" @click="repair">JSON修复</el-button>
         <el-button type="primary" @click="minimal">压缩</el-button>
         <el-checkbox v-model="needTransfer" @change="transfer">转义</el-checkbox>
-        <el-button type="primary" @click="clear">清空输入</el-button>
       </div>
     </div>
   </div>

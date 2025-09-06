@@ -36,7 +36,7 @@ onMounted(() => {
     class="h-full w-full bg-white overflow-hidden dark:bg-[#252525] flex flex-col justify-center space-y-2 overflow-y-hidden"
   >
     <div
-      class="h-[32px] w-full dark:text-[#bdc6cd] dark:bg-[#333] px-2 flex items-center justify-center text-center relative"
+      class="h-[32px] w-full bg-[#F7F7F7] dark:text-[#bdc6cd] dark:bg-[#333] px-2 flex items-center justify-center text-center relative"
       style="user-select: none"
     >
       <div

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Down } from '@icon-park/vue-next'
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { sm3 } from 'sm-crypto-v2'
 import { ElMessage } from 'element-plus'
 
@@ -37,6 +37,17 @@ const copy = (value: string): void => {
   navigator.clipboard.writeText(value)
   ElMessage.success({ message: '复制成功', grouping: true, customClass: 'success' })
 }
+
+onMounted(() => {
+  window.api.onClear(() => {
+    originValue.value = ''
+    handleInput('')
+  })
+})
+
+onUnmounted(() => {
+  window.electron.ipcRenderer.removeAllListeners('clear')
+})
 </script>
 
 <template>
