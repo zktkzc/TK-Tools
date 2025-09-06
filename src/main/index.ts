@@ -16,7 +16,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     frame: false,
     transparent: process.platform !== 'win32',
-    hasShadow: process.platform === 'win32',
+    hasShadow: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
