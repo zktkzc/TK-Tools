@@ -1,26 +1,42 @@
 # tk-tools
 
-An Electron application with Vue and TypeScript
+使用Electron+Vue3编写的测试常用工具箱
 
-## Recommended IDE Setup
+## 软件功能
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- JSON格式化
+- 时间戳工具
+- 日期计算器
+- 文本哈希
+- 文件哈希
+- 生成固定长度的随机字符
+- 生成UUID
 
-## Project Setup
+## 软件界面
 
-### Install
+### Light
+
+![](assets/light.png)
+
+### Dark
+
+![](assets/dark.png)
+
+## 项目初始化
+
+### 安装
 
 ```bash
 $ pnpm install
 ```
 
-### Development
+### 开发
 
 ```bash
 $ pnpm dev
 ```
 
-### Build
+### 编译
 
 ```bash
 # For windows
