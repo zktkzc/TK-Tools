@@ -125,7 +125,8 @@ const initData = async () => {
   result.value = data.data?.result
   needTransfer.value = data.data?.needTransfer
   needWrap.value = data.data?.needWrap
-  activeDropItem.value = data.data?.activeDropItem as { command: string; label: string }
+  activeDropItem.value =
+    (data.data?.activeDropItem as { command: string; label: string }) || dropDownItems[2]
 }
 
 const saveData = () => {
