@@ -22,6 +22,8 @@ const generate = (): void => {
     records.push(v4())
   }
 
+  result.value = records.map((record) => '"' + record + '"').join(getSplitStr())
+
   handleResult()
 
   handleHyphenChange()
