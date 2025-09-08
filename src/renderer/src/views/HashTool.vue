@@ -34,7 +34,7 @@ const handleCommand = (type: string): void => {
 }
 
 const handleInput = async (value: string): Promise<void> => {
-  if (value === '') {
+  if (!value || value === '') {
     md5Value.value = ''
     sha1Value.value = ''
     sha256Value.value = ''
@@ -336,6 +336,8 @@ onUnmounted(() => {
   --el-button-border-color: #29a745;
   --el-button-hover-bg-color: #23923d;
   --el-button-hover-border-color: #23923d;
+  --el-button-active-bg-color: #23923d;
+  --el-button-active-border-color: #23923d;
 }
 
 .dropdown {

@@ -182,7 +182,7 @@ onUnmounted(() => {
           @command="handleCommand"
         >
           <el-button plain>
-            {{ activeDropItem.label }}
+            {{ activeDropItem?.label }}
             <down class="pl-1" />
           </el-button>
           <template #dropdown>
