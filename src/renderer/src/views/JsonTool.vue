@@ -123,8 +123,8 @@ const initData = async () => {
   const data = (await getData('json_tool')) as JsonToolDataType
   jsonStr.value = data.data?.jsonStr
   result.value = data.data?.result
-  needTransfer.value = data.data?.needTransfer
-  needWrap.value = data.data?.needWrap
+  needTransfer.value = data.data?.needTransfer || false
+  needWrap.value = data.data?.needWrap || true
   activeDropItem.value =
     (data.data?.activeDropItem as { command: string; label: string }) || dropDownItems[2]
 }
