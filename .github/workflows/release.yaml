@@ -33,6 +33,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # 新增步骤：修改 @vitejs/plugin-vue 的 package.json
+      - name: Add "types" field to @vitejs/plugin-vue/package.json (macOS)
+        if: matrix.os == 'macOS-latest' # 仅在 macOS 执行
+        run: |
+          jq '.types = "./dist/index.d.ts"' node_modules/@vitejs/plugin-vue/package.json > temp.json && \
+          mv temp.json node_modules/@vitejs/plugin-vue/package.json
+        shell: bash
+
+      - name: Add "types" field to @vitejs/plugin-vue/package.json (Windows)
+        if: matrix.os == 'windows-latest' # 仅在 Windows 执行
+        run: |
+          jq '.types = "./dist/index.d.ts"' node_modules/@vitejs/plugin-vue/package.json | Out-File -Encoding utf8 temp.json
+          Move-Item -Path temp.json -Destination node_modules/@vitejs/plugin-vue/package.json -Force
+        shell: pwsh
+
       - name: Build for Windows
         if: contains(matrix.os, 'windows')
         run: npm run build:win
