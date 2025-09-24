@@ -360,6 +360,8 @@ onUnmounted(() => {
     --el-button-hover-text-color: #fff;
     --el-button-hover-bg-color: #23923d;
     --el-button-hover-border-color: #23923d;
+    --el-button-active-bg-color: #23923d;
+    --el-button-active-border-color: #23923d;
   }
 }
 </style>
