@@ -38,7 +38,19 @@ const router = createRouter({
             {
               path: 'hash',
               name: 'hash',
-              component: () => import('../views/HashTool.vue')
+              component: () => import('../views/HashTool.vue'),
+              children: [
+                {
+                  path: 'calc',
+                  name: 'hashCalc',
+                  component: () => import('../views/HashCalc.vue')
+                },
+                {
+                  path: 'compare',
+                  name: 'hashCompare',
+                  component: () => import('../views/HashCompare.vue')
+                }
+              ]
             },
             {
               path: 'gen',

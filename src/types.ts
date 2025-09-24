@@ -22,7 +22,7 @@ export type JsonToolDataType = {
   }
 }
 
-export type HashToolDataType = {
+export type HashCalcDataType = {
   time: number
   data: {
     originValue: string

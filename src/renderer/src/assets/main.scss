@@ -99,7 +99,6 @@
   .syntax-error {
     max-width: calc(100vw - 100px) !important;
     width: max-content !important;
-    top: 30px !important;
 
     .el-message__content {
       line-height: 1.2rem;
@@ -110,6 +109,8 @@
   }
 
   .error, .syntax-error {
+    top: 70px !important;
+
     @media (prefers-color-scheme: dark) {
       background-color: #291E1D !important;
       border-color: #3D2727 !important;
@@ -124,6 +125,8 @@
   }
 
   .success {
+    top: 70px !important;
+
     @media (prefers-color-scheme: dark) {
       background-color: #0A2321 !important;
       border-color: #29371F !important;

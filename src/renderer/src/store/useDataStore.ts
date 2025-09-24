@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {
   GenerateCharacterDataType,
   GenerateUUIDDataType,
-  HashToolDataType,
+  HashCalcDataType,
   JsonToolDataType
 } from '../../../types'
 
@@ -11,7 +11,7 @@ export const useDataStore = defineStore('data', {
     return {
       data: {
         json_tool: {} as JsonToolDataType,
-        hash_tool: {} as HashToolDataType,
+        hash_calc: {} as HashCalcDataType,
         gen_ch: {} as GenerateCharacterDataType,
         gen_uuid: {} as GenerateUUIDDataType
       }
