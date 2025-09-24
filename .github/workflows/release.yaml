@@ -4,8 +4,7 @@ permissions:
   contents: write
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   build:
@@ -15,12 +14,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-            - name: Windows
-              os: windows-latest
-              node: 22.18.0
-            - name: MacOS
-              os: macOS-latest
-              node: 22.18.0
+          - name: Windows
+            os: windows-latest
+            node: 22.18.0
+          - name: MacOS
+            os: macOS-latest
+            node: 22.18.0
 
     steps:
       - name: Checkout code
