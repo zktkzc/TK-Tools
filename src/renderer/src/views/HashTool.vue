@@ -99,7 +99,11 @@ const selectFile = async () => {
       sha512Value.value = sha512
       calculateSm3ForFile(filePaths[0])
 
-      file.value = filePaths[0].substring(filePaths[0].lastIndexOf('/') + 1)
+      if (window.electron.process.platform === 'win32') {
+        file.value = filePaths[0].substring(filePaths[0].indexOf('\\') + 1)
+      } else {
+        file.value = filePaths[0].substring(filePaths[0].lastIndexOf('/') + 1)
+      }
     })
     .catch((error: Error) => {
       ElMessage.error({
