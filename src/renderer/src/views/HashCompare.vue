@@ -50,7 +50,7 @@ const selectFile = async () => {
       calculateSm3ForFile(filePaths[0])
 
       if (window.electron.process.platform === 'win32') {
-        file.value = filePaths[0].substring(filePaths[0].indexOf('\\') + 1)
+        file.value = filePaths[0].substring(filePaths[0].lastIndexOf('\\') + 1)
       } else {
         file.value = filePaths[0].substring(filePaths[0].lastIndexOf('/') + 1)
       }
