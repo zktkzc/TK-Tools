@@ -68,6 +68,11 @@ const router = createRouter({
                   component: () => import('../views/GenerateUUID.vue')
                 }
               ]
+            },
+            {
+              path: 'diff',
+              name: 'diff',
+              component: () => import('../views/TextDiff.vue')
             }
           ]
         },
