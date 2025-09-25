@@ -132,7 +132,7 @@ const check = () => {
       <div class="h-full flex items-center gap-2 p-1">
         <div class="col-span-4 row-1 flex items-center">
           <div
-            class="w-[60px] h-[40px] flex items-center justify-center rounded-tl-md rounded-bl-md border border-r-0 dark:text-[#bdc6cd] dark:border-[#4C4D4F] dark:bg-[#333]"
+            class="w-[60px] h-[40px] flex items-center justify-center rounded-tl-md rounded-bl-md border border-r-0 text-[#A1A3A9] dark:text-[#bdc6cd] dark:border-[#4C4D4F] bg-[#F5F7FA] dark:bg-[#333]"
           >
             算法:
           </div>
