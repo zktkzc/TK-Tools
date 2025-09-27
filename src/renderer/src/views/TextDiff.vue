@@ -5,7 +5,6 @@
         ref="oldCodemirror"
         v-model="oldValue"
         :extensions="oldExtensions"
-        :readonly="isReadOnly"
         class="editor-instance"
       />
     </div>
@@ -15,7 +14,6 @@
         ref="newCodemirror"
         v-model="newValue"
         :extensions="newExtensions"
-        :readonly="isReadOnly"
         class="editor-instance"
       />
     </div>
@@ -23,17 +21,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import Codemirror from 'vue-codemirror6'
 import { basicSetup } from 'codemirror'
 import { Decoration, EditorView, type EditorView as EditorViewType } from '@codemirror/view'
 import { RangeSet, StateEffect, StateField } from '@codemirror/state'
 import DiffMatchPatch from 'diff-match-patch'
+import { useDataStore } from '@renderer/store/useDataStore'
+import { TextDiffDataType } from '../../../types'
+
+const { setData, getData } = useDataStore()
+const inited = ref(false)
 
 // 文本内容与配置
-const oldValue = ref('我们到现在还是一样的')
-const newValue = ref('我们到现在还是一样的，这几个字给我标个红吧！')
-const isReadOnly = ref(false)
+const oldValue = ref('')
+const newValue = ref('')
 
 // 编辑器实例引用（获取底层 EditorView）
 const oldCodemirror = ref<{ view: EditorViewType | null } | null>(null)
@@ -166,12 +168,12 @@ const computeDiffs = () => {
 const oldExtensions = computed(() => [
   basicSetup,
   oldDiffField,
-  EditorView.editable.of(!isReadOnly.value),
   EditorView.lineWrapping,
   EditorView.updateListener.of((update) => {
-    if (update.docChanged || update.selectionSet) {
+    if (inited.value && (update.docChanged || update.selectionSet)) {
       oldValue.value = update.state.doc.toString()
       updateDecorations()
+      saveData()
     }
   })
 ])
@@ -179,12 +181,12 @@ const oldExtensions = computed(() => [
 const newExtensions = computed(() => [
   basicSetup,
   newDiffField,
-  EditorView.editable.of(!isReadOnly.value),
   EditorView.lineWrapping,
   EditorView.updateListener.of((update) => {
-    if (update.docChanged || update.selectionSet) {
+    if (inited.value && (update.docChanged || update.selectionSet)) {
       newValue.value = update.state.doc.toString()
       updateDecorations()
+      saveData()
     }
   })
 ])
@@ -231,8 +233,38 @@ const updateDecorations = () => {
   }
 }
 
-onMounted(() => {
+const initData = () => {
+  const data = getData('text_diff') as TextDiffDataType
+  newValue.value = data.data?.newValue || ''
+  oldValue.value = data.data?.oldValue || ''
+}
+
+const saveData = () => {
+  setData('text_diff', {
+    time: new Date().getTime(),
+    data: {
+      newValue: newValue.value,
+      oldValue: oldValue.value
+    }
+  })
+}
+
+onMounted(async () => {
+  initData()
+  await nextTick()
+  inited.value = true
   setTimeout(() => updateDecorations(), 50)
+
+  window.api.onClear(() => {
+    oldValue.value = ''
+    newValue.value = ''
+    saveData()
+  })
+})
+
+onUnmounted(() => {
+  window.electron.ipcRenderer.removeAllListeners('clear')
+  saveData()
 })
 </script>
 

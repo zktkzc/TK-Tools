@@ -3,7 +3,8 @@ import {
   GenerateCharacterDataType,
   GenerateUUIDDataType,
   HashCalcDataType,
-  JsonToolDataType
+  JsonToolDataType,
+  TextDiffDataType
 } from '../../../types'
 
 export const useDataStore = defineStore('data', {
@@ -13,7 +14,8 @@ export const useDataStore = defineStore('data', {
         json_tool: {} as JsonToolDataType,
         hash_calc: {} as HashCalcDataType,
         gen_ch: {} as GenerateCharacterDataType,
-        gen_uuid: {} as GenerateUUIDDataType
+        gen_uuid: {} as GenerateUUIDDataType,
+        text_diff: {} as TextDiffDataType
       }
     }
   },

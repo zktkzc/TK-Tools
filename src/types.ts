@@ -56,3 +56,11 @@ export type GenerateUUIDDataType = {
     records: string[]
   }
 }
+
+export type TextDiffDataType = {
+  time: number
+  data: {
+    oldValue: string
+    newValue: string
+  }
+}
