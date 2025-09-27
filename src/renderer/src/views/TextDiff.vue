@@ -6,6 +6,7 @@
         v-model="oldValue"
         :extensions="oldExtensions"
         class="editor-instance"
+        placeholder="原文本..."
       />
     </div>
 
@@ -15,6 +16,7 @@
         v-model="newValue"
         :extensions="newExtensions"
         class="editor-instance"
+        placeholder="新文本..."
       />
     </div>
   </div>
