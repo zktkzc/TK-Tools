@@ -12,16 +12,17 @@
 - 哈希值比对
 - 生成固定长度的随机字符
 - 生成UUID
+- 文本比对
 
 ## 软件界面
 
 ### Light
 
-![](assets/light.png)
+![](screenshots/light.png)
 
 ### Dark
 
-![](assets/dark.png)
+![](screenshots/dark.png)
 
 ## 项目初始化
 
