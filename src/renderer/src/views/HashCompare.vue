@@ -87,6 +87,7 @@ const check = () => {
 <template>
   <div
     class="w-[calc(100wh-10px)] h-[calc(100vh-152px)] m-2 flex flex-col justify-center gap-2 dark:bg-[#252525]"
+    style="user-select: none"
   >
     <div class="w-full h-[200px]">
       <div
