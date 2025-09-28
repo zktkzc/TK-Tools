@@ -117,7 +117,7 @@ watch(
 </script>
 
 <template>
-  <div ref="editor" />
+  <div ref="editor" style="height: 100%" />
 </template>
 
 <style lang="scss" scoped>
