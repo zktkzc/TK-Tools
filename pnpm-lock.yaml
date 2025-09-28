@@ -68,9 +68,6 @@ importers:
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
-      vue-codemirror6:
-        specifier: ^1.3.22
-        version: 1.3.22(@codemirror/autocomplete@6.18.6)(@codemirror/commands@6.8.1)(@codemirror/language@6.11.3)(@codemirror/lint@6.8.5)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/view@6.38.3)(codemirror@6.0.2)(style-mod@4.1.2)(vue@3.5.19(typescript@5.9.2))
       vue-router:
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.19(typescript@5.9.2))
@@ -3197,21 +3194,6 @@ packages:
 
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
-
-  vue-codemirror6@1.3.22:
-    resolution: {integrity: sha512-XzAJKKSPq8p6xWTlH+4ZqONO5qFiu2U3aRoLDU6lhHBvWfX4/L2QOoi87y8TETV1qZ15fQRP1t9YXapEE1tiRQ==}
-    engines: {node: '>=18', pnpm: '>=10.3.0'}
-    peerDependencies:
-      '@codemirror/autocomplete': ^6.0.0
-      '@codemirror/commands': ^6.0.0
-      '@codemirror/language': ^6.0.0
-      '@codemirror/lint': ^6.0.0
-      '@codemirror/search': ^6.0.0
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
-      codemirror: ^6.0.0
-      style-mod: ^4.0.0
-      vue: ^2.7.14 || ^3.3.4
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -6550,22 +6532,6 @@ snapshots:
       yaml: 2.8.1
 
   vscode-uri@3.1.0: {}
-
-  vue-codemirror6@1.3.22(@codemirror/autocomplete@6.18.6)(@codemirror/commands@6.8.1)(@codemirror/language@6.11.3)(@codemirror/lint@6.8.5)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/view@6.38.3)(codemirror@6.0.2)(style-mod@4.1.2)(vue@3.5.19(typescript@5.9.2)):
-    dependencies:
-      '@codemirror/autocomplete': 6.18.6
-      '@codemirror/commands': 6.8.1
-      '@codemirror/language': 6.11.3
-      '@codemirror/lint': 6.8.5
-      '@codemirror/search': 6.5.11
-      '@codemirror/state': 6.5.2
-      '@codemirror/view': 6.38.3
-      codemirror: 6.0.2
-      style-mod: 4.1.2
-      vue: 3.5.19(typescript@5.9.2)
-      vue-demi: 0.14.10(vue@3.5.19(typescript@5.9.2))
-    transitivePeerDependencies:
-      - '@vue/composition-api'
 
   vue-demi@0.14.10(vue@3.5.19(typescript@5.9.2)):
     dependencies:

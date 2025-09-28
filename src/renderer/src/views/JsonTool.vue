@@ -15,6 +15,8 @@ const result = ref()
 const needTransfer = ref(false)
 const needWrap = ref(true)
 const { setData, getData } = useDataStore()
+const editor1 = ref()
+const editor2 = ref()
 
 const copy = () => {
   navigator.clipboard.writeText(result.value)
@@ -49,6 +51,7 @@ const beautify = (): void => {
         result.value = ''
       }
       saveData()
+      editor2.value.updateEditor(result.value)
     })
   saveData()
 }
@@ -88,6 +91,7 @@ const minimal = (): void => {
         result.value = ''
       }
       saveData()
+      editor2.value.updateEditor(result.value)
     })
   saveData()
 }
@@ -99,11 +103,14 @@ const transfer = (): void => {
     result.value = result.value.replaceAll('\\"', '"')
   }
   saveData()
+  editor2.value.updateEditor(result.value)
 }
 
 const autoWrap = () => {
   beautify()
   saveData()
+  editor1.value.initEditor()
+  editor2.value.initEditor()
 }
 
 const dropDownItems = [
@@ -144,11 +151,15 @@ const saveData = () => {
 
 onMounted(async () => {
   await initData()
+  editor1.value.initEditor()
+  editor2.value.initEditor()
 
   window.api.onClear(() => {
     jsonStr.value = ''
     result.value = ''
     saveData()
+    editor1.value.updateEditor(jsonStr.value)
+    editor2.value.updateEditor(result.value)
   })
 })
 
@@ -165,17 +176,29 @@ onUnmounted(() => {
         <div
           class="h-full w-1/2 border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-auto"
         >
-          <Editor v-model:code="jsonStr" lang="json" placeholder="输入" :line-wrap="needWrap" />
+          <Editor
+            ref="editor1"
+            v-model="jsonStr"
+            lang="json"
+            placeholder-str="输入"
+            :line-wrap="needWrap"
+          />
         </div>
         <div
           class="h-full w-1/2 border border-[#DDDFE5] dark:border-[#4C4D4F] rounded-md p-[1px] overflow-auto"
         >
-          <Editor v-model:code="result" lang="json" placeholder="输出" :line-wrap="needWrap" />
+          <Editor
+            ref="editor2"
+            v-model="result"
+            lang="json"
+            placeholder-str="输出"
+            :line-wrap="needWrap"
+          />
         </div>
       </div>
     </div>
     <div class="w-full h-[40px]">
-      <div class="h-full w-full flex items-center gap-2">
+      <div class="h-full w-full flex items-center justify-center gap-2">
         <el-dropdown
           trigger="click"
           class="dropdown"

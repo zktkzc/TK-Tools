@@ -129,3 +129,9 @@ ipcMain.handle('readFile', async (_event: IpcMainInvokeEvent, filePath: string) 
     }
   })
 })
+
+nativeTheme.on('updated', () => {
+  BrowserWindow.getAllWindows().forEach((win) => {
+    win.webContents.send('themeChanged')
+  })
+})
