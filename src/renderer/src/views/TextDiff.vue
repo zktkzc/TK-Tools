@@ -293,9 +293,10 @@ onUnmounted(() => {
   }
 }
 
-:deep(.cm-focused .cm-selectionBackground),
 :deep(.cm-selectionBackground) {
-  @apply dark:bg-[rgba(204,204,204,0.15)];
+  @media (prefers-color-scheme: dark) {
+    background: rgba(204, 204, 204, 0.25) !important;
+  }
 }
 
 .editor-instance {

@@ -1,6 +1,6 @@
 {
   "name": "tk-tools",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "测试常用工具箱",
   "main": "./out/main/index.js",
   "author": "example.com",
