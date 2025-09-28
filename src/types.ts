@@ -60,7 +60,11 @@ export type GenerateUUIDDataType = {
 export type TextDiffDataType = {
   time: number
   data: {
-    oldValue: string
-    newValue: string
+    a: string
+    b: string
+    options: {
+      lineWrap: boolean
+      revertControl: string
+    }
   }
 }
