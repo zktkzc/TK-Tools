@@ -1,9 +1,11 @@
 <template>
   <div class="h-[calc(100vh-90px)] w-full flex flex-col items-center justify-between p-2 gap-2">
     <div
-      class="flex-1 w-full overflow-auto dark:text-[#ccc] border rounded-md dark:border-[#4C4D4F] border-[#e5e7eb]"
+      class="flex-1 w-full dark:text-[#ccc] border rounded-md dark:border-[#4C4D4F] border-[#e5e7eb] overflow-auto"
     >
-      <div ref="container" />
+      <div>
+        <div ref="container" class="h-full w-full" />
+      </div>
     </div>
     <div
       class="h-[40px] w-full border border-[#e5e7eb] dark:border-[#4C4D4F] rounded-md flex items-center justify-center gap-2 p-1"
@@ -147,8 +149,52 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+:deep(.cm-mergeView) {
+  height: 100% !important;
+
+  .cm-mergeViewEditors {
+    height: 100%;
+
+    .cm-editor {
+      height: 100% !important;
+
+      .cm-scroller {
+        height: 100% !important;
+      }
+    }
+  }
+}
+
+:deep(.cm-content) {
+  @apply dark:bg-[#212123] dark:-z-30;
+}
+
+:deep(.ͼ2.cm-merge-a .cm-changedLineGutter) {
+  @apply dark:bg-[#fa9] bg-[#e43];
+}
+
+:deep(.ͼ2.cm-merge-a .cm-changedText) {
+  background: linear-gradient(#ee443366, #ee443366) bottom/100% 2px no-repeat;
+
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(#ffaa9966, #ffaa9966) bottom/100% 2px no-repeat;
+  }
+}
+
+:deep(.ͼ2.cm-merge-b .cm-changedLineGutter) {
+  @apply dark:bg-[#8f8] bg-[#2b2];
+}
+
+:deep(.ͼ2.cm-merge-b .cm-changedText) {
+  background: linear-gradient(#22bb2266, #22bb2266) bottom/100% 2px no-repeat;
+
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(#88ff8866, #88ff8866) bottom/100% 2px no-repeat;
+  }
+}
+
 :deep(.cm-gutters) {
-  @apply dark:bg-[#333] dark:text-[#ccc] border-none rounded-tl-md rounded-bl-md;
+  @apply dark:bg-[#333] dark:text-[#ccc] border-none;
 }
 
 :deep(.cm-activeLineGutter) {
@@ -165,7 +211,7 @@ onUnmounted(() => {
   }
 }
 
-:deep(.cm-selectionBackground) {
+:deep(.ͼ2 .cm-selectionBackground) {
   @media (prefers-color-scheme: dark) {
     background: rgba(204, 204, 204, 0.25) !important;
   }
