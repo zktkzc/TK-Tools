@@ -70,8 +70,9 @@ const initData = () => {
 
   const oldData = getData('text_diff') as TextDiffDataType
   data.value.a = oldData.data?.a
-  data.value.b = oldData.data.b
-  data.value.options = oldData.data.options
+  data.value.b = oldData.data?.b
+  data.value.options.lineWrap = oldData.data?.options?.lineWrap || true
+  data.value.options.revertControl = oldData.data?.options?.revertControl || 'b-to-a'
 }
 
 const saveData = async () => {
@@ -218,7 +219,7 @@ onUnmounted(() => {
 }
 
 :deep(.revert-control-select) {
-  width: 100px;
+  width: 110px;
 
   &:hover {
     .el-select__placeholder {
