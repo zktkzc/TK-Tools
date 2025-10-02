@@ -1,6 +1,8 @@
 # tk-tools
 
-使用Electron+Vue3编写的测试常用工具箱
+使用Electron+Vue3编写的测试常用工具箱。
+
+该项目已改造为Tauri2版本，项目地址：[https://github.com/zktkzc/tk-tools-tauri/tree/main](https://github.com/zktkzc/tk-tools-tauri/tree/main)
 
 ## 软件功能
 
